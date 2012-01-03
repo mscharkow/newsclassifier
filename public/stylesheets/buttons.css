@@ -1,0 +1,23 @@
+.abutton{background:#222 url(alert-overlay.png) repeat-x;display:inline-block;padding:5px 10px 6px;color:#fff;text-decoration:none;font-weight:bold;line-height:1;-moz-border-radius:3px;-webkit-border-radius:3px;-moz-box-shadow:0 1px 3px #999;-webkit-box-shadow:0 1px 3px #999;text-shadow:0 -1px 1px #222;border-bottom:1px solid #222;position:relative;cursor:pointer;}
+.abutton:hover{background-color:#111;color:#fff;}
+.abutton:active{top:1px;}
+.small.abutton,.small.abutton:visited{font-size:11px;padding:;}
+.abutton,.abutton:visited,
+.medium.abutton,.medium.abutton:visited{font-size:13px;font-weight:bold;line-height:1;text-shadow:0 -1px 1px rgba(0,0,0,0.25);}
+.large.abutton,.large.abutton:visited{font-size:14px;padding:8px 14px 9px;}
+.green.abutton,.green.abutton:visited{background-color:#91bd09;}
+.green.abutton:hover{background-color:#749a02;}
+.blue.abutton,.blue.abutton:visited{background-color:#2daebf;}
+.blue.abutton:hover{background-color:#007d9a;}
+.red.abutton,.red.abutton:visited{background-color:#BD2031;}
+.red.abutton:hover{background-color:#872300;}
+.magenta.abutton,.magenta.abutton:visited{background-color:#a9014b;}
+.magenta.abutton:hover{background-color:#630030;}
+.orange.abutton,.orange.abutton:visited{background-color:#ff5c00;}
+.orange.abutton:hover{background-color:#d45500;}
+.yellow.abutton,.yellow.abutton:visited{background-color:#ffb515;}
+.yellow.abutton:hover{background-color:#fc9200;}
+.margin.abutton{margin-left:1em;}
+
+.toggle .abutton{visibility:hidden;}
+.toggle:hover .abutton {visibility: visible;}

@@ -1,0 +1,13 @@
+<div class="sideright sidebar">
+<h2>Project Announcements</h2>
+<%= simple_format(@project.announcements)%>
+
+<% if @projects && @projects.size > 1%>
+<h2>Other Projects</h2>
+<ul>
+	<% @projects.each do |project| %>
+	<li><%= link_to project.name, {:action=>'show',:host=>request.host.gsub(@project.permalink,project.permalink), :port => request.port}%></li>
+	<%end%>
+	</ul>
+<%end%>
+</div>

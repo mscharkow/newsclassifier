@@ -1,0 +1,17 @@
+<div class="grid_12">
+<h2>Codebook for project <strong><%=@project.name%></strong></h2>
+<% @classifiers.each do | c | %>
+<h3> <%=h c.name%> (<%= cltype(c)%>)</h3>
+
+<p class="description"><%=h c.description.blank? ? 'No description available.' : c.description %>.</p>
+<p>Relevant parts: <%= c.parts.sort.join(', ')%></p>
+
+<table>
+	<% c.categories.each do |cat |%>
+		<tr><td><%=h cat.name%></td><td><%=h cat.value %></td>
+			<td><%= cat.description%></td></tr>
+	<%end%>
+</table>
+<%end%>
+
+</div>

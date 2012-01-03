@@ -1,0 +1,19 @@
+<div class="grid_12">
+<h2 id="page-heading">Samples in the project</h2>
+<p class="welcome">The project contains  <%=pluralize(@project.samples.count, 'sample')%>. <%= link_to 'Draw a new sample', new_sample_path%>.
+</p>
+
+<table>
+ <thead>
+	<th>Name</th><th>Number of documents</th><th>Active?</th><th></th>
+  </thead>
+
+<% @samples.each do |sample| %>
+   <tr class="<%=cycle('odd','even')%>">
+    <td><%=h sample.name %></td>
+    <td><%= sample.items.size%></td>
+    <td><%= link_to (sample.active? ? 'active':'inactive'), activate_sample_path(sample) %></td>
+    <td><%=  button_to 'Delete', sample_path(sample), :method=>:delete, :class=>'small red delete' %></td>
+  </tr>
+<% end %>
+</table>

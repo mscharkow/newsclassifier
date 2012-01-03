@@ -1,0 +1,21 @@
+<script class="code" type="text/javascript">
+	$(document).ready(function(){
+	 $.getJSON('/documents.json?source=<%=source.id%>', function(data){
+	  var plot1 = $.jqplot('source_<%=source.id%>', [data], sl_opts );
+	});
+});
+</script>  
+
+<tr class="<%=cycle('odd','even')%>">
+	<td class="toggle">
+		<%=link_to short_source(source), source%>
+		<%= abutton_to 'Edit', edit_source_path(source), 'small magenta'%>
+	</td>
+	<td><%=link_to source.documents.count, documents_path(:source=>source) %>
+		</td>
+	 <td> <div class="sparkline" id="source_<%=source.id%>"></div></td>
+	<td>
+	<%= abutton_to 'Update from feed', import_source_url(source), 'small green right' %> 
+	 </td>
+	<td><%=  button_to 'Delete', source_url(source), :method=>:delete, :class=>'small red delete' %></td>
+</tr>

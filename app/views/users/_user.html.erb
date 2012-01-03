@@ -1,0 +1,5 @@
+<tr class="<%= cycle('odd','even')%>">
+	<td><%= link_to(user.email,user) %></td>
+	<td><%= user.classifiers.collect{|c|link_to(c.name,c)}.join(', ')%> </td>
+	<td><%= pluralize(user.documents.uniq.size,'documents classified')%></td>
+</tr>

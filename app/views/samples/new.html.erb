@@ -1,0 +1,7 @@
+<h2>Draw a new sample</h2>
+
+<%= simple_form_for(@sample) do |f| %>
+	<%=f.input :name%>
+	<%=f.input :num_items, :label=>'Sample size'%>
+  <%= f.submit 'Save' %>
+<% end %>

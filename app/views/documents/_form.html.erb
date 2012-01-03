@@ -1,0 +1,20 @@
+<% form_for(@document) do |f| %>
+<p>
+  <b>Title</b><br />
+  <%= f.text_field :title, :size=>60 %>
+</p>
+
+<%= f.collection_select( :source_id , @project.sources, "id", "name") %>
+
+<p>
+  <b>Content</b><br />
+  <%= f.text_area :content, {:cols=>80} %>
+</p>
+<p>
+	<b>Publication Date</b>
+	<%= f.datetime_select :pubdate%>
+</p>
+  <p>
+    <%= f.submit "Save" %>
+  </p>
+<% end %>

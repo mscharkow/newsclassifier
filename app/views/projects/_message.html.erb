@@ -1,0 +1,12 @@
+<div class="grid_6">
+<h3>Announcements</h3>
+<%= form_for(@project) do |f| %>
+	<p>
+  <%= f.text_area :announcements %>
+</p>
+
+<p>
+  <%= f.submit "Save announcements" %>
+</p>
+<% end %>
+</div>

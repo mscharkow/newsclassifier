@@ -1,0 +1,18 @@
+<div class="category">
+
+<% fields_for "classifier[cats][]", category do | c | %>
+<p><strong>Category:</strong> <%= c.text_field :name, :index=>nil %> <strong>Value</strong> <%=c.text_field  :value, :index=>nil, :size=>2 %>
+
+	
+
+<% if category.new_record?%>
+	<%= link_to_function 'Remove category', "this.up('.category').remove()"%>
+<%else%>
+	<%= link_to_function 'Remove category', "mark_for_destroy(this)"%>
+	<%= c.hidden_field :id, :index=>nil%>
+	<%= c.hidden_field :should_destroy, :index=>nil, :class=>'should_destroy'%>
+<%end%>
+</p>
+<p>Description:<br/> <%= c.text_area :description, :index=>nil, :rows=>2, :cols =>60 %></p>
+<p></p>
+<% end %></div>

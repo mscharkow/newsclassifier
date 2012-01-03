@@ -1,0 +1,3 @@
+<% @documents.each do |d|%>
+<%= d.url%> <%= d.body.links.join(' ') %>
+<%end%>

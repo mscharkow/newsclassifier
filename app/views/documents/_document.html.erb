@@ -1,0 +1,3 @@
+<li class="<%= 'cur' if document.id == @document.id%>">
+	<%= link_to truncate(document.title,80), :action=>'classify', :id => document.id%>  <%=h document.pubdate.strftime('%Y-%m-%d')%>
+</li>

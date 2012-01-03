@@ -1,0 +1,27 @@
+<h2>Listing all projects</h2>
+
+<p class="welcome"><%= pluralize(@projects.size,'active project')%>.</p>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Permalink</th>
+<th></th>
+<th></th>
+  </tr>
+
+<% for project in @projects %>
+  <tr>
+    <td><%=h project.name %></td>
+    <td><%=h project.permalink %></td>
+<td><%=  button_to 'Delete', project_url(project), :method=>:delete, :class=>'small red delete' %></td>
+    <td><%= link_to 'Switch to project', {:action=>'show',:host=>request.host.gsub(@project.permalink,project.permalink)} %></td>
+  </tr>
+<% end %>
+</table>
+
+
+
+
+<%= link_to 'New Project', new_project_path %>
+

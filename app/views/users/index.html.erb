@@ -1,0 +1,12 @@
+<div class="grid_12">
+	<h2 id="page-heading">Coders in the project</h2>
+	<p class="welcome">The project has  <%=pluralize(@project.users.count, 'coder')%>. <%= link_to 'Add a new coder', new_user_path%>.
+		<span class="right">
+		    <%= abutton_to 'Download as CSV', {:format=>'csv'}%>
+		</span>	
+	</p>
+	
+	<table id="userlist">
+		<%= render @users %>
+	</table>
+</div>

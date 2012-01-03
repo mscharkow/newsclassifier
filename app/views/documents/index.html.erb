@@ -1,0 +1,31 @@
+<div class="grid_12">
+<h2 id="page-heading">Documents in the project</h2>
+<p class="welcome">The project contains  <%=pluralize(@project.documents.count, 'document')%>. <%= link_to 'Start coding!', document_path(@next)  if @next%><span class="right">
+	<%= abutton_to 'Download as TXT', {:format=>'txt',:params=>params}%>
+    <%= abutton_to 'Download as CSV', {:format=>'csv',:params=>params}%>
+</span></p>
+
+
+
+<table>
+ <thead>
+    <th>Title</th>
+    <th>Source</th>
+    <th>Published</th>
+    <th>Score</th>
+  </thead>
+
+<% @documents.each do | document | %>
+  <tr class="<%=cycle('odd','even')%>">
+	<td><%=link_to document.title, document, :title=>document.url%></td>
+    <td><%= link_to short_source(document.source), document.source%>
+	<%= link_to ' (F) ', documents_path(:source=>document.source) %></td>
+    <td><%=h document.pubdate.strftime('%Y-%m-%d %H:%M')%></td>
+    <td></td>
+  </tr>
+<% end %>
+</table>
+
+<%= paginate @documents, :window=>10%>
+</div>
+

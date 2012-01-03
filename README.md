@@ -20,6 +20,8 @@ Install the necessary bundles, create the db, go:
 
 	$ bundle install
 	$ vim config/database.yml
+	$ vim config/config.yml
+	
 	$ rake db:create
 
 ## Getting started
@@ -33,7 +35,7 @@ Then start the web server and resque via foreman:
 
 	$ foreman start
 	
-After creating a project and firing up t, you can access it via a subdomain, i.e. http://projectname.localhost.local:5000 You might need to update your hosts file for local testing and setup your web server in production.
+After creating a project and starting the server, you can access it via a subdomain, i.e. http://projectname.localhost.local You might need to update your hosts file for local testing and setup your web server in production.
 
 You can login with the email supplied above and the password you received.
 

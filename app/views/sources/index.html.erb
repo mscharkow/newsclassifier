@@ -1,0 +1,26 @@
+<div class="grid_12">
+<h2>Sources in the project</h2>
+<p class="welcome">The project contains documents from  <%=pluralize(@project.sources.count, 'source')%>. <%= link_to 'Add a new source', new_source_path%>. <a href="#" data-reveal-id="quick_add">Quick add</a>
+	<span class="right">
+		<%= abutton_to 'Update all sources', import_all_sources_url,'green'%>
+	    <%= abutton_to 'Download as CSV', {:format=>'csv'}%>
+	</span>	
+</p>
+
+
+<table>
+	<thead><th>Name</th><th>Documents</th><th>History</th><th></th><th></th></thead>
+<%= render :partial => 'source', :collection => @sources%>
+</table>
+<p><%= paginate @sources %></p>
+</div>
+
+<div id="quick_add" class="reveal-modal">
+<h3>Quick add source</h3>
+<%= form_for(Source.new) do |f|%>
+  <p class="welcome">
+<label>Add this Website (URL): </label><%= f.text_field :site_url %> <%= f.submit "Add website" %>
+  </p>
+<%end%>
+</div>
+

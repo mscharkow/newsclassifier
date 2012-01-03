@@ -1,0 +1,7 @@
+<h2>Start new project</h2>
+<%= simple_form_for Project.new do |f| %>
+    <%= f.input :name %>
+    <%= f.input :permalink, :hint=>'The subdomain for your project.' %>
+    <%= f.input :admin, :label=>'Admin email',:hint=>'The email address for the admin user.' %>
+    <%= f.submit "Create project" %>
+<%end%>

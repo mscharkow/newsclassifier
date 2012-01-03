@@ -1,0 +1,4 @@
+id; name; documents; feeds
+<% @sources.each do |source| -%>
+<%= "#{source.id}; #{source.name}; #{source.documents.count}; #{source.urls.join(' ')}" %>	
+<%end%>

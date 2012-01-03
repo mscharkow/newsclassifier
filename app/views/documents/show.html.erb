@@ -1,0 +1,35 @@
+<div class="article">
+<% if @parts.include?('title')%>
+	<h2><%=h@document.title%></h2>	
+<%end%>
+	<p class="meta"><%= link_to @document.source.name, source_path(@document.source) %> | <%= @document.pubdate.strftime('%Y-%m-%d %H:%M')%> | <%= link_to 'Article URL',@document.print_url%> | <%= @document.content.words.size rescue nil%> words</p>
+
+<% if @parts.include?('summary')%>
+	<div class="summary"> <%=  @document.summary unless @document.summary.blank?%> </div>
+<%end%>
+
+<% if @parts.include?('content')%>
+<div class="doc_content">
+	<%= simple_format(@document.content.dup) unless @document.content.blank?%>
+</div>	
+<%end%>
+
+<% if @parts.include?('raw')%>
+<div class="raw_content">
+	<%= sanitize(@document.body.raw_content[/<body.*\/body>/m]) unless @document.body.raw_content.blank?%>
+</div>	
+<%end%>
+
+<% if @parts.include?('website')%>
+<iframe src="<%=@document.url%>" width="95%" height="66%" name="SELFHTML_in_a_box">
+</iframe>
+<%end%>
+
+<% if @is_admin%>
+<p><%= link_to 'Edit', edit_document_path(@document) %> |
+<%= link_to 'Destroy', @document, :confirm => 'Are you sure?', :method => :delete %></p>
+<%end%> 	
+<p><%= link_to '&laquo; Back to list'.html_safe, :back, :class=>"abutton margin" %></p>
+</div>
+
+

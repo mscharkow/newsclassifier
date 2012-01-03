@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+		<meta charset="utf-8">
+		<title><%= @project.name%> | NewsClassifier</title>
+		<!--[if IE 6]><link rel="stylesheet" type="text/css" href="stylesheets/ie6.css" media="screen" /><![endif]-->
+		<!--[if IE 7]><link rel="stylesheet" type="text/css" href="stylesheets/ie.css" media="screen" /><![endif]-->
+
+	<%= stylesheet_link_tag 'reset','text','grid','layout','nav','buttons', 'jquery.jqplot.min', 'reveal' %>
+	
+  <%= javascript_include_tag 'jquery.min.js', 'jquery.jqplot.min.js', 'jqplot.dateAxisRenderer.min.js', 'jqplot.json2.min.js', 'jquery.reveal', 'application.js' %>
+  <%= csrf_meta_tag %>
+</head>
+<body>
+	<div class="container_12">
+		<div class="grid_12">
+			<ul class="nav main">
+				<li>
+					<%= link_to "NC | #{@project.name}", root_path%>
+				</li>
+				<li>
+					<%= link_to "Documents", documents_path %>
+				</li>
+				<li>
+					<%= link_to "Sources", sources_path %>
+				</li>					
+				<li>
+					<%= link_to "Classifiers", classifiers_path %>
+				</li>
+				<li>
+					<%= link_to "Samples", samples_path %>
+				</li>
+				
+				<li class="secondary">
+					<% if user_signed_in?%>
+					<%= link_to 'Logout', logout_path %>
+					<%else%>
+					<%= link_to 'Login', login_path %>
+					<%end%>
+				</li>
+				<li class="secondary">
+					<%= link_to current_user.email.split("@").first, edit_user_path(current_user) if user_signed_in? %>
+				</li>
+				<% if current_user%>
+				<li class="secondary">
+					<%= link_to "All Projects", projects_path %>
+				</li>
+				<%end%>
+				<li class="secondary">
+					<a href="#" data-reveal-id="about">About NC</a>
+				</li>
+			</ul>
+
+		</div>
+
+		<div class="clear"></div>
+		
+		<% flash.each do | key,msg |%>
+      		<div class="grid_12"><p class="flash <%=key%>"><%=msg%></p></div>
+     <%end%>
+
+
+		<% if @fullpage %>
+			<%= yield %>
+		<%else %>
+			<div class="grid_8">
+				<%= yield %>
+			</div>
+			<div class="grid_4 sidebar">
+				<% begin %>
+					<%=render(:partial => "sidebar") %>
+				<% rescue MissingTemplate %> 
+				<% nil %>
+				<% end %>
+			</div>
+		<%end%>
+
+		
+		<div id="about" class="reveal-modal">
+			<h2>About NewsClassifier</h2>
+			<p> &copy; 2008-2012 by Michael Scharkow. NewsClassifier is free software available under the AGPL v3. Get information and source code from <a href="http://newsclassifier.org">newsclassifier.org</a>.</p>
+			</div>
+	
+	</div>
+
+</body>
+</html>
+

@@ -1,0 +1,50 @@
+<h2>Classifier <strong><%= @classifier.name %></strong> (<%= cltype(@classifier)%>)</h2>
+<p class="welcome">
+<%= pluralize(@classifier.documents.count,'document')  %>
+classified so far. 
+	<%= abutton_to 'Edit classifier', edit_classifier_path(@classifier), 'small magenta right'%> <%= abutton_to 'Classify all documents', classify_classifier_path(@classifier), 'small green right'%>
+</p>
+
+<h3>Description</h3>
+<p> <%=h @classifier.description.blank? ? 'No description available.' : @classifier.description %></p>
+<p>Relevant parts:
+<%= @classifier.parts.sort.join(', ')%>.</p>
+
+<h3>Categories</h3>
+<p> <%= @classifier.name%> has <%= pluralize(@classifier.categories.count,'category')%>.</p>
+<table>
+	<thead><th>Category</th><th>Description</th><th class="currency">Documents</th><th class="currency">Percent</th><thead>
+	<% @classifier.categories.each do | cat | %>
+		<tr class="<%= cycle('odd','even')%>">
+			<td><strong><%= cat.name %></strong></td>
+			<td><%= cat.description%></td>
+			<td class="currency"><%= cat.documents.count%></td>
+			<td class="currency"><%=cat.percent.round%></td>
+		</tr>
+		<%end%>
+</table>
+
+<h3>Reliability</h3>
+
+<% if @classifier.type == nil && @classifier.reliability%>
+
+Intercoder Reliability: <%= @classifier.reliability[:manual][1].join(', ') rescue nil %> (Holsti PA, Krippendorff's Alpha, N)
+
+<div id="manual_reli" class="rcode">
+	<%= simple_format(@classifier.reliability[:manual][0])%>
+</div>
+
+Classifier Reliability: <%= @classifier.reliability[:auto][1].join(', ') rescue nil %> (Holsti PA, Krippendorff's Alpha, N)
+
+<div id="manual_reli" class="rcode">
+	<%= simple_format(@classifier.reliability[:auto][0])%>
+</div>
+
+<%else%>
+<p>No reliability data available. 
+<%= link_to("Run reliability test", @classifier) unless @classifier.type %>	
+</p>
+<%end%>
+
+
+

@@ -1,0 +1,145 @@
+/*
+-----------------------------------------------
+Grey Box Method - Layout CSS
+----------------------------------------------- */
+body{background:#fff;border-top:4px solid #231F20;color:#231F20;font-size:14px;padding:0 0 20px;}
+/* anchors
+----------------------------------------------- */
+a{color:#000;font-weight:bold;text-decoration:none;}
+a:hover{color:#BD2031;}
+
+/* 960 grid system container background
+----------------------------------------------- */
+.container_12,
+.container_16{background:#fff;}
+/* headings
+----------------------------------------------- */
+h1,h2,h3,h4,h5,h6{line-height:1.2em;margin-bottom:.3em;}
+h2{margin-top:1em;}
+h3{margin-top:1em;font-size:1.2em;}
+h5{font-size:1.2em;}
+h6{font-size:1em;text-transform:uppercase;}
+h1 a{font-weight:normal;}
+/* branding
+----------------------------------------------- */
+h1#branding{font-weight:normal;font-size:3em;text-align:left;background:#aaa;padding:.7em 0em;margin-bottom:0;}
+/* page heading
+----------------------------------------------- */
+h2{font-weight:normal;padding:.5em 0;margin:0 0 10px 0;border-bottom:1px solid #ccc;}
+p.welcome{font-size:1.2em;padding:.1em 0em;}
+.dashboard img{width:100%;}
+p.flash{text-align:center;width:60%;margin:.5em auto;padding:.2em;font-weight:bold;background:#EEE;border:1px solid rgba(0,0,0,0.1);border-radius:3px;-webkit-border-radius:3px;}
+p.error,p.alert{background-color:#C00000;color:white;}
+/* boxes
+----------------------------------------------- */
+.box{background:#fff;margin-bottom:20px;padding:10px 10px 1px 10px;/*min-height:12em;*/}
+.dashboard h2{font-size:1em;font-weight:bold;text-transform:uppercase;color:#fff;background:#231F20;margin:-10px -10px 5px -10px;padding:6px 12px;}
+.sidebar td {border-top:0;}
+.summary{font-weight:bold;margin-bottom:.5em;}
+.doc_content p{margin-bottom:.5em;}
+.right{text-align:right;float:right;margin-left:.5em;}
+.pagination{margin-top:1em;margin-bottom:2em;}
+.sparkline{width:240px;height:48px;margin:0;padding:0;margin-bottom:0em;}
+.footer{margin-top:1.5em; margin-bottom:.5em;}
+.footer p{font-size:small;color:#999;}
+.box h2 a,
+.box h2 a.visible{color:#fff;background:#231F20 url("../img/switch_minus.gif") 97% 50% no-repeat;display:block;padding:6px 12px;margin:-6px -12px;border:none;}
+.grid_4 .box h2 a{background-position:97% 50%;}
+.grid_5 .box h2 a{background-position:98% 50%;}
+.grid_12 .box h2 a{background-position:99% 50%;}
+.box h2 a.hidden,
+.box h2 a.hidden:hover{background-image:url("../img/switch_plus.gif");}
+.box h2 a:hover{background-color:#111;}
+.block{padding-top:10px;}
+div.menu{padding:0;}
+div.menu h2{margin:0;}
+div.menu .block{padding-top:0;}
+/* paragraphs,quotes and lists
+----------------------------------------------- */
+p{margin-bottom:1em;}
+blockquote{font-family:Georgia,'Times New Roman',serif;font-size:1.2em;padding-left:1em;border-left:4px solid #ccc;}
+blockquote cite{font-size:.9em;}
+ul,ol{padding-top:0;}
+/* menus
+----------------------------------------------- */
+ul.menu{list-style:none;border-top:1px solid #bbb;}
+ul.menu li{margin:0;}
+ul.menu li a{display:block;padding:4px 10px;border-bottom:1px solid #ccc;}
+ul.menu li a:hover{background:#eee;}
+ul.menu li a:active{background:#ccc;}
+/* submenus
+----------------------------------------------- */
+ul.menu ul{list-style:none;margin:0;}
+ul.menu ul li a{padding-left:30px;}
+/* section menus
+----------------------------------------------- */
+ul.section{border-top:0;margin-bottom:0;}
+ul.section li{text-transform:uppercase;}
+ul.section li a{background:#bbb;}
+ul.section li a:hover{background:#aaa;}
+ul.section li a:active{color:#fff;background:#666;}
+ul.section li li a{background:#ddd;border-bottom:1px solid #eee;}
+ul.section li li a:hover{background:#ccc;}
+ul.section li li a:active{color:#000;background:#fff;}
+ul.section ul li{text-transform:none;}
+ul.section ul.current li a{background:#eee;border-bottom:1px solid #fff;}
+ul.section ul.current li a:hover{background:#ddd;}
+ul.section ul.current li a:active{background:#fff;}
+ul.section li a.current{color:#fff;background:#666;}
+ul.section li a.current:hover{background:#555;}
+ul.section li a.current:active{background:#444;}
+ul.section li a.active{background:#fff;cursor:default;}
+ul.section li.current > a.active,
+ul.section li.current > a.active:hover{color:#fff;background:#666;cursor:default;}
+/* table
+----------------------------------------------- */
+table{width:100%;/* border:1px solid #bbb;*/
+margin-bottom:10px;}
+col.colC{width:8em;}
+th,td{padding:.4em;text-align:left;vertical-align:middle;}
+thead th{/*border-bottom:2px solid #888;*/
+background:black;color:white;}
+thead th.table-head{font-size:1em;font-weight:normal;text-transform:uppercase;color:#fff;background:#555;border:1px solid #555;}
+tbody th,
+tbody td{border-top:1px solid #bbb;border-bottom:1px solid #bbb;}
+tbody tr.odd th,
+tbody tr.odd td{background:#fff;}
+tfoot th,
+tfoot td{border-top:2px solid #666;background:#eee;}
+tfoot tr.total th,
+tfoot tr.total td{border-top:6px double #666;}
+tfoot tr.total th{text-transform:uppercase;}
+th.currency,
+td.currency{text-align:right;}
+.dashboard table{border:0;}
+.even{background-color:#eee;}
+/* forms
+----------------------------------------------- */
+form{overflow:hidden; font-size:1em;}
+fieldset{border:1px solid #bbb;padding:10px;position:relative;background:#e9e9e9;margin-bottom:10px;}
+legend{font-size:1.1em;padding:.4em .8em;background:#fff;border:1px solid #bbb;}
+label{line-height:2em; font-weight:normal; display:block;}
+input, textarea {font-size:1em;}
+p.input{margin-bottom:.2em;}
+p.boolean input, p.boolean label, p.boolean, p.check_boxes, p.check_boxes label, p.nobreak, p.nobreak label {display:inline;}
+p.nobreak label{margin-right:.5em;}
+div.category{margin:2em 0;}
+span.error{color:red; padding-left:.5em;}
+span.hint{color:#666; font-size: small; display:block; }
+
+
+/* articles
+----------------------------------------------- */
+.article img{float:right;margin:3px 10px 3px 10px;padding:4px;border:1px solid #bbb;background:#fff;}
+.article p.meta{color:#666;border-top:1px dotted #999;border-bottom:1px dotted #999;padding:.3em 0;margin-bottom:.8em;background:#eee;}
+
+td.classifier_name{min-width:72%;}
+
+
+/* site information
+----------------------------------------------- */
+#site_info .box{color:#ccc;background:#333;margin-bottom:.8em;}
+#site_info a{color:#fff;}
+#site_info a:hover{color:#000;}
+
+

@@ -1,0 +1,12 @@
+<h2>Classifier list</h2>
+<table>
+<% for classifier in @project.classifiers %>
+  <tr class="<%=cycle('odd','even')%>">
+	<td><%= link_to classifier.name, classifier_path(classifier)%></td>
+	<td><%= cltype(classifier)%></td>
+	<td><%= pluralize(@classifier.categories.count,'category')%></td>
+	</tr>
+<% end %>
+</table>
+<p><%= abutton_to 'Add new manual classifier', new_classifier_path, 'small magenta' %> <%= abutton_to 'Add new automatic classifier', new_classifier_path(:type=>'dict'), 'small magenta' %></p>
+

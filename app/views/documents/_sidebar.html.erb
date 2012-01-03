@@ -1,0 +1,5 @@
+<h2>Classify this document </h2>
+<% if params[:action] == 'show'%>
+	<%= render :partial => 'classification_form' unless @document.classifications.blank?%>
+	<%end%>
+ <p><%= session[:doclist].size rescue 'No documents'%> to go </p>
