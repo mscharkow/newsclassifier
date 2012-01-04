@@ -52,7 +52,7 @@ class Document < ActiveRecord::Base
         get_url_content(url)
       end
     end
-    raw_content
+    self.touch and body.raw_content
   end
   
   def get_classifications(permanent=nil)
