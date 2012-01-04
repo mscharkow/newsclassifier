@@ -13,7 +13,7 @@
 <div class="grid_8">
 <p class="welcome"> It currently contains <%= link_to pluralize(@project.documents.count, 'document'), documents_path%> from <%= link_to pluralize(@project.sources.count, 'source'), sources_path%> and <%= link_to pluralize(@project.samples.count, 'sample'), samples_path%>.
 	<br/>
-	The codebook contains <%= link_to pluralize(@project.classifiers.count, 'manual classifier'), classifiers_path%> and another <%= link_to pluralize(@project.classifiers.count, 'automatic classifier'), classifiers_path%>.
+	The codebook contains <%= link_to pluralize(@project.classifiers.manual.count, 'manual classifier'), classifiers_path%> and another <%= link_to pluralize(@project.classifiers.auto.count, 'automatic classifier'), classifiers_path%>.
 	<br/>
 	<%= link_to pluralize(@project.users.count, 'coder'), users_path%> created <a href="#"><%= pluralize(@project.classifications.manual.size,'classification')%></a> until now.
 </div>
