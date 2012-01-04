@@ -104,6 +104,9 @@ class Source < ActiveRecord::Base
     end
   end
   
+  def self.import_all_feeds
+    Source.where(:auto_update=>true).find_each{|s|Resque.enqueue(FeedImport, s.id)}
+  end
 
 end
 
