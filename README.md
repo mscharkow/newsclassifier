@@ -1,6 +1,6 @@
 # Welcome to NewsClassifier
 
-NewsClassifier is a web application for analyzing (potentially large quantities of) electronic documents, i.e. web pages or news feeds. NewsClassifier provides a framework for automatically retrieving news articles from RSS feeds, extracting relevant text from messy websites and archive them for later analyses. You can use NewsClassifier as a frontend for manual and automatic (key-word based) coding. It supports unlimited users, news sources and categories. You can run automatic reliability tests and export all results as standard CSV files.
+NewsClassifier is a web application for analyzing potentially large quantities of electronic documents, i.e. web pages or news feeds. NewsClassifier provides a framework for automatically retrieving news articles from RSS feeds, extracting relevant text from messy websites and archive them for later analyses. You can use NewsClassifier as a frontend for manual and automatic (using keywords or regular expressions) coding. It supports unlimited users, news sources and categories. You can run automatic reliability tests and export all results as standard CSV files.
 
 ## Installation
 
@@ -9,7 +9,7 @@ NewsClassifier is a Rails application, so installation is fairly standard.
 ### Requirements
 
 * Ruby 1.9.2 or later (I recommend using RVM)
-* Redis
+* Redis/Resque
 * MySQL/PostgreSQL/Sqlite
 
 You also need to have Python 2.6+ installed for the BTE tool.
@@ -49,4 +49,4 @@ NewsClassifier was written as part of my PhD thesis, so it has not been widely t
 
 Thank you.
 
-&copy; 2008-2011 by Michael Scharkow <michael@underused.org>
+&copy; 2008-2012 by Michael Scharkow <michael@underused.org>
