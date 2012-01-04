@@ -207,6 +207,7 @@ GEM
     vlad (2.2.4)
       rake (~> 0.8)
       rake-remote_task (~> 2.0)
+    vlad-extras (0.5.4)
     vlad-git (2.2.0)
       vlad (>= 2.1.0)
     vlad-unicorn (2.1.0)
@@ -245,5 +246,7 @@ DEPENDENCIES
   textstats
   uglifier
   unicorn
+  vlad
+  vlad-extras
   vlad-git
   vlad-unicorn

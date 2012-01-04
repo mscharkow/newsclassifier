@@ -14,8 +14,10 @@ end
 # Use unicorn as the web server
 gem 'unicorn'
 
-# Deploy with Capistrano
+# Deploy with Vlad
+gem 'vlad'
 gem 'vlad-git'
+gem 'vlad-extras'
 gem 'vlad-unicorn'
 
 

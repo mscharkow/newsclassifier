@@ -5,5 +5,5 @@ log/*.log
 tmp/
 config/database.yml
 config/config.yml
-script/
+config/unicorn.rb
 bundler_stubs/
