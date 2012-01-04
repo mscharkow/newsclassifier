@@ -1,6 +1,6 @@
 <h2>Available Sources</h2>
 <table>
-<% for source in @project.sources %>
+<% @project.sources.order(:name).each do |source| %>
   <tr class="<%=cycle('odd','even')%>">
 	<td><%= link_to short_source(source), source_path(source)%></td>
 	<td><%= link_to_if(source.urls[0], '<img src="/images/feed.gif" alt=""/>'.html_safe, source.urls[0]) {}%></td>
