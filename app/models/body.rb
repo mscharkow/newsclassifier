@@ -9,7 +9,7 @@ class Body < ActiveRecord::Base
   
   def get_content
     if content?
-      content
+      extract_text(content)
     elsif raw_content == '404' || raw_content.blank?
       extract_text(summary)
     else

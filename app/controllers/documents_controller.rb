@@ -39,7 +39,8 @@ class DocumentsController < ApplicationController
     
     respond_to do |format|
       format.html # index.html.erb
-      format.csv {send_file("/tmp/documents_#{@project.id}.csv", :type=>"text/csv", :x_sendfile=>true) unless params[:links] }
+      #format.csv {@project.csv and send_file("/tmp/documents_#{@project.id}.csv", :type=>"text/csv", :x_sendfile=>true) unless params[:links] }
+      format.csv {render :text=>@project.csv unless params[:links] }
       format.text {render :text => @documents.map(&:title).join("\n")}
       format.xml  {render :xml => @documents }
       format.json {render :json => @documents}

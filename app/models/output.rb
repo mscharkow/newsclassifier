@@ -32,7 +32,7 @@ class Output
     out = []
     out << header+"\n"
     Document.by_project(@project).find_in_batches(:conditions=>conditions,:include=>[:source]) do | documents|
-      key = documents.first.classifications.last.cache_key+documents.last.classifications.last.cache_key
+      key = "#{documents.first.classifications.last.try(:cache_key)}#{documents.last.classifications.last.try(:cache_key)}" || Time.now.to_s
       out << Rails.cache.fetch(key) do 
         ha = self.create_hash(classifiers,documents)
         documents.map {|d| [d.id, clean(d.url), clean(d.title), d.pubdate.strftime('%Y-%m-%d-%H-%M;%Y;%m;%d;%a;%H;%M'), d.created_at.strftime('%Y-%m-%d-%H-%M'), clean(d.source.name), d.stats.fetch(:words,'NA'), classifiers.map{|c| ha[ [c.id,d.id] ] rescue 'NA' }].flatten.join(';')}.join("\n")+"\n"

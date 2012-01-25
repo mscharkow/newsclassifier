@@ -65,9 +65,6 @@ class Classifier < ActiveRecord::Base
     classifications.find_all_by_document_id(document)
   end
   
-  def classify(document,permanent=false)
-    content = relevant_content(document)
-  end
 
   
 #---- Reliability
@@ -82,6 +79,35 @@ class Classifier < ActiveRecord::Base
   def difficult_documents
     documents.uniq.map{|d| d if self.all_classifications_for(d).map{|a|a.category_id}.uniq.size > 1}.compact
   end
+  
+# Supervised Classification
+
+
+def classify(document,permanent=false)
+  content = relevant_content(document)
+  @cl.classify(content)
+end
+
+def train(classification)
+  content = relevant_content(classification.document)
+  @cl.train(classification.category.id,content)
+end
+
+def load_classifier
+  cats = categories.all.map(&:id)
+  @cl = RubyClassifier::Bayes.new(*cats)
+end
+
+def save_classifier
+  File.open(cl_path,'w'){|f|f.write(Marshal.dump(@cl))}
+end  
+
+def cl_path
+  "#{Rails.root}/data/classifier_#{id}"
+end
+  
+  
+
 
 end
 
