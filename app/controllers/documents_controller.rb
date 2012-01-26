@@ -78,7 +78,7 @@ class DocumentsController < ApplicationController
   
   
   def next_document
-    session[:doclist] =  @project.documents.for_user(@user).all(:select=>:id).sort_by{rand}[0..19] if session[:doclist].blank?
+    session[:doclist] =  @project.documents.for_user(current_user).all(:select=>:id).sort_by{rand}[0..19] if session[:doclist].blank?
     @next = session[:doclist].pop
   end
   
