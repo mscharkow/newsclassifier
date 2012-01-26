@@ -3,10 +3,9 @@
   <%= f.input :description, :input_html=>{:rows=>4}%>
   <%= f.input :parts, :collection=>@classifier.default_parts, :as=>:check_boxes%>
 
-<% if @classifier.type == 'DictionaryClassifier'%>
-	<%= f.input :regexp, :input_html=>{:rows=>4} %>
-	<%= f.hidden_field :type %>
-<% else %>
+<% if @classifier.type.blank?%>
+
+
 
 	<div id="categories">
 	<h3>Categories</h3>
@@ -24,7 +23,12 @@
 	<%= abutton_to '+ Add category', '#add', 'addcat blue'%>
 	<h3>Coders</h3>
 	<%= f.association :users, :as => :check_boxes %>
-<% end %>	
+
+
+<% else %>
+	<%= f.input :regexp, :input_html=>{:rows=>4} %>
+	<%= f.hidden_field :type %>
+	<% end %>	
 <p>
   <%= f.submit "Save" %></p>
 <% end %>
