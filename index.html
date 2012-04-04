@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Newsclassifier : A tool for manual and automatic content analysis" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Newsclassifier</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/mscharkow/newsclassifier">Fork Me on GitHub</a>
+
+          <h1 id="project_title">Newsclassifier</h1>
+          <h2 id="project_tagline">A tool for manual and automatic content analysis</h2>
+
+          <section id="downloads">
+            <a class="zip_download_link" href="https://github.com/mscharkow/newsclassifier/zipball/master">Download this project as a .zip file</a>
+            <a class="tar_download_link" href="https://github.com/mscharkow/newsclassifier/tarball/master">Download this project as a tar.gz file</a>
+          </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h2>NewsClassifier</h2>
+
+<p>NewsClassifier is a web application for analyzing potentially large quantities of electronic documents, i.e. web pages or news feeds. NewsClassifier provides a framework for automatically retrieving news articles from RSS feeds, extracting relevant text from messy websites and archive them for later analyses. You can use NewsClassifier as a frontend for manual and automatic (using keywords or regular expressions) coding. It supports unlimited users, news sources and categories. You can run automatic reliability tests and export all results as standard CSV files.</p>
+
+<h2>Installation</h2>
+
+<p>NewsClassifier is a Rails application, so installation is fairly standard. </p>
+
+<h3>Requirements</h3>
+
+<ul>
+<li>Ruby 1.9.2 or later (I recommend using RVM)</li>
+<li>Redis/Resque</li>
+<li>MySQL/PostgreSQL/Sqlite</li>
+</ul><p>You also need to have Python 2.6+ installed for the BTE tool.</p>
+
+<h3>Setup</h3>
+
+<p>Install the necessary bundles, create the db, go:</p>
+
+<pre><code>$ bundle install
+$ vim config/database.yml
+$ vim config/config.yml
+$ rake db:create
+</code></pre>
+
+<h2>Getting started</h2>
+
+<p>You can manage multiple projects with NewsClassifier, each with its own users, sources, documents and categories. The easiest way to set up a project is the quick_create method:</p>
+
+<pre><code>$ rails console
+irb&gt; Project.quick_create(title, email, subdomain)
+</code></pre>
+
+<p>Then start the web server and resque via foreman:</p>
+
+<pre><code>$ foreman start
+</code></pre>
+
+<p>After creating a project and starting the server, you can access it via a subdomain, i.e. <a href="http://projectname.localhost.local">http://projectname.localhost.local</a> You might need to update your hosts file for local testing and setup your web server in production.</p>
+
+<p>You can login with the email supplied above and the password you received.</p>
+
+<h2>License</h2>
+
+<p>NewsClassifier is Free Software and licensed under the Affero General Public License 3 (AGPL).</p>
+
+<p>Thank you.</p>
+
+<p>© 2008-2012 by Michael Scharkow <a href="mailto:michael@underused.org">michael@underused.org</a></p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Newsclassifier maintained by <a href="https://github.com/mscharkow">mscharkow</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
