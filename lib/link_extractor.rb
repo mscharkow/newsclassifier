@@ -4,7 +4,6 @@ require 'uri'
 
 
 class LinkExtractor
-
   def initialize(url,content)
     @url = url
     @content = content
@@ -27,9 +26,6 @@ class LinkExtractor
     link_url = link['href'] rescue nil
     link_url if link_url && link_url.match(/^https?:\/\/\w+\/?/) && hostname(link_url) != hostname(@url)
   end
-  
-
-  
 end
 
 
