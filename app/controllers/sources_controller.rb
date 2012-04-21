@@ -48,6 +48,12 @@ class SourcesController < ApplicationController
     redirect_to(sources_url)
   end
   
+  def reset
+    Resque.enqueue(ResetSource,@source.id)
+    flash[:info] = "All documents from #{@source.name} are being deleted. This may take a minute."
+    redirect_to(sources_url)
+  end
+  
   def import 
     Resque.enqueue(FeedImport, @source.id)
     flash[:info] = "Import from #{@source.name} started. This may take a minute."

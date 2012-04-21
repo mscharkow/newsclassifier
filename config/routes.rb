@@ -26,6 +26,7 @@ Nc3::Application.routes.draw do
   
   resources :sources do
     member {get 'import' }
+    member {get 'reset'}
     collection {get 'import_all'}
   end
   

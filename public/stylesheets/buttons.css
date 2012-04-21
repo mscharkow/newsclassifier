@@ -19,5 +19,5 @@
 .yellow.abutton:hover{background-color:#fc9200;}
 .margin.abutton{margin-left:1em;}
 
-.toggle .abutton{visibility:hidden;}
-.toggle:hover .abutton {visibility: visible;}
+.toggle .small{visibility:hidden;}
+.toggle:hover .small {visibility: visible;}

@@ -1,5 +1,6 @@
 <h2>Source <strong><%= @source.name%></strong></h2>
 <p class="welcome">This source has <%= pluralize @source.documents.size, 'document' %>.
 	
+		<%= button_to 'Reset (Delete documents)', reset_source_path(@source), :class=>'right small black delete'%>
 	<%= abutton_to 'Edit source', edit_source_path(@source), 'right small magenta'%>
 	</p>

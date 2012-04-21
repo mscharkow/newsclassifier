@@ -90,9 +90,9 @@ var sl_opts = {
     }
 };
 
-$('input.delete').live('click',
+$('.delete').live('click',
 function(event) {
-    if (confirm("Are you sure you want to delete this?"))
+    if (confirm("This action can result in data loss. Are you sure?"))
     return true;
 });
 

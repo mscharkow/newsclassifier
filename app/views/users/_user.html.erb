@@ -1,5 +1,6 @@
 <tr class="<%= cycle('odd','even')%>">
 	<td><%= link_to(user.email,user) %></td>
-	<td><%= user.classifiers.collect{|c|link_to(c.name,c)}.join(', ')%> </td>
+	<td><%= user.classifiers.map{|c|link_to(c.name,classifier_path(c))}.join(', ').html_safe%> </td>
 	<td><%= pluralize(user.documents.uniq.size,'documents classified')%></td>
+	<td><%= button_to 'Delete user', user, :method=>:delete unless user.admin? %></td>
 </tr>

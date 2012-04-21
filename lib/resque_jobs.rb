@@ -25,3 +25,10 @@ class FeedImport
     Source.find(source_id).import_feeds    
   end
 end
+
+class ResetSource
+  @queue = :sources
+  def self.perform(source_id)
+    Source.find(source_id).documents.destroy_all
+  end
+end

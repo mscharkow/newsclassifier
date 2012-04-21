@@ -1,14 +1,3 @@
 <h2>Add new coder</h2>
-<%= form_for :user, :url => users_path do |f| -%>
-<p><label for="email">Email</label><br/>
-<%= f.text_field :email %></p>
+<%= render :partial => 'form' %>
 
-<p><label for="password">Password</label><br/>
-<%= f.password_field :password %></p>
-
-<% @project.classifiers.manual.each do |cl|%>
-<%= check_box_tag "user[classifier_ids][]", cl.id, current_user.classifiers.include?(cl) %>
-<%end%>
-
-<p><%= submit_tag 'Create User' %></p>
-<% end -%>
