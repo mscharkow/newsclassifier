@@ -1,4 +1,6 @@
 class Reltest
+  #TODO Clean up mess
+  
   attr_accessor :classifier 
   attr_reader :training_set, :test_set, :problems
   
@@ -28,7 +30,7 @@ class Reltest
   end
   
   
-  def manual(rcode=0)
+  def manual
     #data = classifier.classifications.manual.find(:all,:conditions=>{:document_id,classifier.documents.find_dupes})
     data = classifier.classifications.manual.all
     return false if data.blank?
@@ -41,8 +43,10 @@ class Reltest
     out.each{|k,v|csv << users.map{|u|v[u] || 'NA'}}
     rout = "# coders #{users.join(', ')}\nrel <- matrix(c(#{csv.flatten.join(', ')}),nrow=#{users.size}) \n reli(rel)"
     #coeff = (Float(rel_r("#{rout}$statistic").split[1])*100).round/100.0
-    coeff = rel_r(rout)
-    [rout,coeff]
+    output = {}
+    output = rel_r(rout)
+    output[:rcode]=rout
+    output
   end
   
   def run
@@ -99,7 +103,8 @@ class Reltest
     r.close_write
     c = r.read
     r.close
-    c.gsub(/(\n)+/,'').split[1..-1]
+    res = c.gsub(/(\n)+/,'').split[1..-1].map(&:to_f)
+    {:percent=>res[0],:kripp=>res[1],:n=>res[2].to_i,:matrix=>res[3..-1]}
   end
   
   #class methods

@@ -9,8 +9,8 @@ set :deploy_to, "/home/deploy/apps/#{application}"
 
 task :demo do
   set :deploy_to, "/home/deploy/apps/nc3_demo"
-  set :unicorn_command, [ "source ~/.rvm/scripts/rvm", "cd #{deploy_to}/current",
-                          "unicorn"].join(" && ")
+  #set :unicorn_command, [ "source ~/.rvm/scripts/rvm", "cd #{deploy_to}/current",
+  #                        "unicorn"].join(" && ")
 end
 
 set :bundle_cmd, [  "source ~/.rvm/scripts/rvm",

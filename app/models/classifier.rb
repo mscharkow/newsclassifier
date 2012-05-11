@@ -37,7 +37,7 @@ class Classifier < ActiveRecord::Base
   
   
   def manual_reliability
-    reliability[:manual][0] rescue nil
+    Reltest.new(self).manual
   end
   
   def auto_reliability
@@ -68,13 +68,6 @@ class Classifier < ActiveRecord::Base
 
   
 #---- Reliability
-
-  def test_reliability
-    self.reliability = {}
-    r = Reltest.new(self)
-    reliability[:manual] = r.manual rescue [0,0]
-    save
-  end
   
   def difficult_documents
     documents.uniq.map{|d| d if self.all_classifications_for(d).map{|a|a.category_id}.uniq.size > 1}.compact

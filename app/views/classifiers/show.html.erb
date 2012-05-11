@@ -26,18 +26,17 @@ classified so far.
 
 <h3>Reliability</h3>
 
-<% if @classifier.type == nil && @classifier.reliability%>
 
-Intercoder Reliability: <%= @classifier.reliability[:manual][1].join(', ') rescue nil %> (Holsti PA, Krippendorff's Alpha, N)
+<% if @classifier.type == nil && @manual%>
+<p>Reliability statistics are based on <%= @manual[:n] %> pairwise codings.</p>
 
+<p>Percent Agreement: <%= @manual[:percent] %><br/>Krippendorff's Alpha: <%= @manual[:kripp] %></p>
+
+<h4>Replication code for R</h4>
 <div id="manual_reli" class="rcode">
-	<%= simple_format(@classifier.reliability[:manual][0])%>
-</div>
-
-Classifier Reliability: <%= @classifier.reliability[:auto][1].join(', ') rescue nil %> (Holsti PA, Krippendorff's Alpha, N)
-
-<div id="manual_reli" class="rcode">
-	<%= simple_format(@classifier.reliability[:auto][0])%>
+	<pre>
+<%= @manual[:rcode].strip%>
+	</pre>
 </div>
 
 <%else%>
