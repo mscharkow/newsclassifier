@@ -9,6 +9,7 @@ class ClassifiersController < ApplicationController
   end
   
   def show
+    @manual = @classifier.manual_reliability
   end
 
   def new
