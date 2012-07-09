@@ -1,7 +1,7 @@
 development:
-adapter: sqlite3
-database: db/dev.sqlite3
-timeout: 5000
+  adapter: sqlite3
+  database: db/dev.sqlite3
+  timeout: 5000
 
 # Warning: The database defined as 'test' will be erased and
 # re-generated from your development database when you run 'rake'.
