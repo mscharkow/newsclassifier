@@ -42,7 +42,7 @@ class ClassifiersController < ApplicationController
 
   def update
     if @classifier.update_attributes(params[:classifier])
-      redirect_to @classifier, :notice => 'Classifier was successfully updated.'
+      redirect_to classifier_path(@classifier), :notice => 'Classifier was successfully updated.'
     else
       render :action => "edit"
     end
