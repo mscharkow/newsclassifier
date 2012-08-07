@@ -1,11 +1,12 @@
 class SourcesController < ApplicationController
-  before_filter :get_sources
+  before_filter :get_sources, :only=>[:index, :show, :edit]
   before_filter :get_source, :except=>[:index,:new,:create,:import_all]
   
   def index
     @fullpage = true
+    @sources = @sources.page(params[:page]) if request.format == 'html'
     respond_to do |format|
-      format.html # index.html.erb
+      format.html# index.html.erb
       format.csv
     end
   end
@@ -73,7 +74,7 @@ class SourcesController < ApplicationController
   end
   
   def get_sources
-    @sources = @project.sources.order(:name).page(params[:page])
+    @sources = @project.sources.order(:name)
   end
     
 end
