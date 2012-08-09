@@ -1,1 +1,1 @@
-rvm 1.9.3@nc3
+rvm --create 1.9.3@nc3 
