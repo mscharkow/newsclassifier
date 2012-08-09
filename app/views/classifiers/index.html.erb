@@ -15,6 +15,7 @@
 	<thead> <th>Name</th><th>Type</th><th>Reliability</th><th>Categories</th><th>Details</th><th>Classified Documents</th><th></th><th></th> </thead>
 <%= render :partial=>'classifier', :collection => @classifiers%>
 </table>
+<p><%= paginate @classifiers %></p>
 </div>
 
 

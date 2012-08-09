@@ -4,6 +4,9 @@ class Source < ActiveRecord::Base
   
   include URLHelper
   
+  cattr_reader :per_page
+  @@per_page = 20
+  
   belongs_to :project
   has_many :documents, :dependent=>:destroy
   

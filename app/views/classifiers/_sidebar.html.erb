@@ -1,6 +1,6 @@
 <h2>Classifier list</h2>
 <table>
-<% @project.classifiers.order(:name).each do |classifier|%>
+<% @classifiers.each do |classifier|%>
   <tr class="<%=cycle('odd','even')%>">
 	<td><%= link_to classifier.name, classifier_path(classifier)%></td>
 	<td><%= cltype(classifier)%></td>

@@ -20,9 +20,11 @@ class DictionaryClassifier < Classifier
   def classify(document,permanent=false)
     result = relevant_content(document).scan(reg)
     if result.size > 0
-      res = {:document=>document,:category=>self.categories[0],:score=>result.size} #true
+      res = {:document=>document,
+             :category=>self.categories[0],:score=>result.size} #true
     else
-      res = {:document=>document,:category=>self.categories[1],:score=>0} # false
+      res = {:document=>document,
+             :category=>self.categories[1],:score=>0} # false
     end
     if permanent
       if cl = document.classifications.select{|i|i.classifier_id==id}[0] 

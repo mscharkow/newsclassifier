@@ -1,11 +1,12 @@
 class ClassifiersController < ApplicationController
   before_filter :is_admin?
+  before_filter :get_classifiers, :only=>[:index, :show, :new, :edit]
   before_filter :get_classifier, :except => [:index,:new,:create,:classify_all,:codebook]
   before_filter :merge_params
   
   def index
     @fullpage = true
-    @classifiers = @project.classifiers.find(:all,:order => :name)
+    @classifiers = @classifiers.page(params[:page])
   end
   
   def show
@@ -81,5 +82,9 @@ class ClassifiersController < ApplicationController
   
   def get_classifier
     @classifier = @project.classifiers.find(params[:id])
+  end
+  
+  def get_classifiers
+    @classifiers = @project.classifiers.order(:name)
   end
 end

@@ -1,6 +1,9 @@
 class Classifier < ActiveRecord::Base
   attr_accessor :reltest
   attr_accessor :options_mask 
+  
+  cattr_reader :per_page
+  @@per_page = 20
       
   belongs_to :project
   has_many :categories, :dependent => :destroy
