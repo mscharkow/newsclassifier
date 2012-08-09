@@ -32,12 +32,3 @@ class ResetSource
     Source.find(source_id).documents.destroy_all
   end
 end
-
-
-def cl_perform(classifier_ids,document_ids)
-  classifiers = Classifier.auto.find(classifier_ids,:include=>:categories)
-  Document.where(:id=>document_ids).find_each(:include=>[:body,:classifications]) do |doc|
-    puts doc.id
-    puts Benchmark.ms {classifiers.each{|c|c.classify(doc,true)}}
-  end
-end
