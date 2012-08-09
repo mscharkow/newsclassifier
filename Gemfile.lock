@@ -210,8 +210,6 @@ GEM
     vlad-extras (0.5.4)
     vlad-git (2.2.0)
       vlad (>= 2.1.0)
-    vlad-unicorn (2.1.0)
-      vlad (~> 2.0)
     warden (1.1.0)
       rack (>= 1.0)
 
@@ -249,4 +247,3 @@ DEPENDENCIES
   vlad
   vlad-extras
   vlad-git
-  vlad-unicorn

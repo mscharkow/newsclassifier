@@ -18,8 +18,6 @@ gem 'unicorn'
 gem 'vlad'
 gem 'vlad-git'
 gem 'vlad-extras'
-gem 'vlad-unicorn'
-
 
 group :test do
   gem 'minitest'        
