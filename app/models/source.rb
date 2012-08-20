@@ -20,7 +20,7 @@ class Source < ActiveRecord::Base
     return if site_url.blank?
     if feeds = FeedFinder.feeds(site_url)
       self.urls = [urls,feeds[0]].flatten.compact.join("\n")
-      self.name = Feedzirra::Feed.fetch_and_parse(urls[0]).title || site_url
+      self.name = Feedzirra::Feed.fetch_and_parse(urls[0]).try(:title) || site_url
       self
     else
       false
