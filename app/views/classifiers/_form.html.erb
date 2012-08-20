@@ -1,4 +1,4 @@
-<%= simple_form_for @classifier do |f| %>
+<%= simple_form_for @classifier, :html => { :class => 'form-horizontal' } do |f| %>
   <%= f.input :name %>
   <%= f.input :description, :input_html=>{:rows=>4}%>
   <%= f.input :parts, :collection=>@classifier.default_parts, :as=>:check_boxes%>
@@ -15,12 +15,12 @@
 				<%= cat.input :value, :wrapper_html=>{:class=>'nobreak', :size=>4} %>
 				<%= cat.input :description, :input_html=>{:rows=>2,:cols=>70} %>
 				<%= cat.hidden_field :_destroy, :input_html=>{:class=>'should_destroy'} %>
-		    <%= abutton_to '- Remove this category', '#', 'delcat small' %>
+		    <%= abutton_to '- Remove this category', '#', {style:'delcat small'} %>
 		</div>
 		<% end %>
 	</div>
 	<a name="add"></a>
-	<%= abutton_to '+ Add category', '#add', 'addcat blue'%>
+	<%= abutton_to '+ Add category', '#add', {style:'addcat blue'}%>
 	<h3>Coders</h3>
 	<%= f.association :users, :as => :check_boxes %>
 

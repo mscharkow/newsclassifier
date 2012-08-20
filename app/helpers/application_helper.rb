@@ -1,6 +1,9 @@
 module ApplicationHelper
-  def abutton_to(text,path,style='',method='get')
-    link_to text, path, {:method=>method,:class=>"abutton #{style}"}
+  def abutton_to(text,path,options={})
+    options = {method:'get',class:'',icon:nil}.merge(options)
+    
+    text = "<i class='icon-#{options[:icon]}'></i> ".html_safe+text if options[:icon]
+    link_to text, path, {:method=>options[:method],:class=>"btn #{options[:style]}"}
   end
   
   def document_timeline(docs)

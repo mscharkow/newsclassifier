@@ -8,5 +8,5 @@
 	</tr>
 <% end %>
 </table>
-<p><%= abutton_to 'Add new manual classifier', new_classifier_path, 'small magenta' %> <%= abutton_to 'Add new automatic classifier', new_classifier_path(:type=>'dict'), 'small magenta' %></p>
+<p><%= abutton_to 'Add manual classifier', new_classifier_path %> <%= abutton_to 'Add automatic classifier', new_classifier_path(:type=>'dict')%></p>
 

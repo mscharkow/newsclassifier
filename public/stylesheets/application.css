@@ -1,2 +1,14 @@
-a.brand{color:white;}
 div.container-fluid {max-width:1600px;margin:0 auto;}
+.navbar {font-size:120%;}
+
+td.toggle {width:40%;}
+td.toggle a.btn{display:none;}
+td.toggle:hover a.btn{display:inline;}
+
+span.current {float: left;
+padding: 0 14px;
+line-height: 34px;
+text-decoration: none;
+border: 1px solid #DDD;
+}
+

@@ -1,13 +1,17 @@
-<div class="grid_12">
-<h2 id="page-heading">Documents in the project</h2>
-<p class="welcome">The project contains  <%=pluralize(@project.documents.count, 'document')%>. <%= link_to 'Start coding!', document_path(@next)  if @next%><span class="right">
-	<%= abutton_to 'Download as TXT', {:format=>'txt',:params=>params}%>
-    <%= abutton_to 'Download as CSV', {:format=>'csv',:params=>params}%>
-</span></p>
+<div class="btn-group pull-right">
+	<%= abutton_to 'Titles', {format:'txt',params:params},{icon:'download'}%>
+	<%= abutton_to 'Link list', {format:'csv',links:1},{icon:'download'}%>
+  <%= abutton_to 'Complete CSV', {format:'csv',params:params},{icon:'list-alt'}%>
+</div>
+<h2>Documents in the project</h2>
+
+<p class="welcome">The project contains  <%=pluralize(@project.documents.count, 'document')%>. <%= link_to 'Start coding!', document_path(@next)  if @next%>
+
+</p>
 
 
 
-<table>
+<table class="table table-striped">
  <thead>
     <th>Title</th>
     <th>Source</th>
@@ -18,7 +22,7 @@
 <% @documents.each do | document | %>
   <tr class="<%=cycle('odd','even')%>">
 	<td><%=link_to document.title, document, :title=>document.url%></td>
-    <td><%= link_to short_source(document.source), document.source%>
+  <td><%= link_to short_source(document.source), document.source%>
 	<%= link_to ' (F) ', documents_path(:source=>document.source) %></td>
     <td><%=h document.pubdate.strftime('%Y-%m-%d %H:%M')%></td>
     <td></td>
@@ -26,6 +30,5 @@
 <% end %>
 </table>
 
-<%= paginate @documents, :window=>10%>
-</div>
+<p><%= paginate @documents, :window=>10%></p>
 

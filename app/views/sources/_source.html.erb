@@ -6,10 +6,10 @@
 });
 </script>  
 
-<tr class="<%=cycle('odd','even')%>">
+<tr>
 	<td class="toggle">
 		<%=link_to short_source(source), source%>
-		<%= abutton_to 'Edit', edit_source_path(source), 'small magenta'%>
+		<%= abutton_to 'Edit', edit_source_path(source),{style:'btn-small',icon:'edit'}%>
 
 		
 	</td>
@@ -17,9 +17,14 @@
 		</td>
 	 <td> <div class="sparkline" id="source_<%=source.id%>"></div></td>
 	<td>
-	<%= abutton_to 'Update from feed', import_source_url(source), 'small green right' %> 
+	<%= abutton_to 'Update from feed', import_source_url(source),{style:'btn-small pull-right',icon:'refresh'} %> 
 	 </td>
 	<td>
-	<%= button_to 'Reset', reset_source_path(source), :method=>:get,:class=>'small red delete'%>
-	<%=  button_to 'Delete', source_url(source), :method=>:delete, :class=>'small red delete' %></td>
+		<div class="btn-group pull-right">
+	<%= abutton_to 'Reset', reset_source_path(source), 
+	{method:'get',:style=>'btn btn-small',icon:'fire'}%>
+	<%= abutton_to 'Delete', source_url(source), 
+	{method:'delete',:style=>'btn btn-small btn-danger',icon:'trash icon-white'} %>
+	</div>
+	</td>
 </tr>

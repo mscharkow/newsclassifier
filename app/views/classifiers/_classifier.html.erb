@@ -1,7 +1,7 @@
 <tr class="<%= cycle('odd','even')%>">
 		<td class="toggle">
 		    <%= link_to classifier.name, classifier_path(classifier)
-		%>		<%= abutton_to 'Edit', edit_classifier_path(classifier), 'small magenta'%>
+		%>		<%= abutton_to 'Edit', edit_classifier_path(classifier)%>
 		
 		</td>
     			<td><%= cltype(classifier)  %></td>
@@ -24,7 +24,7 @@
 
 		<td><%= classifier.classifications.size %></td>
 		<td class="currency">
-		<%= abutton_to 'Classify documents', classify_classifier_url(classifier), 'small green' unless classifier.type.blank?%> </td>
-	<td class="currency"><%=  button_to 'Delete', classifier_url(classifier), :method=>:delete, :class=>'small red delete' %>
+		<%= abutton_to 'Classify documents', classify_classifier_url(classifier) unless classifier.type.blank?%> </td>
+	<td class="currency"><%=  button_to 'Delete', classifier_url(classifier), :method=>:delete, :class=>'btn btn-danger btn-small' %>
 		
 </tr>
