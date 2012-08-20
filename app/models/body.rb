@@ -1,11 +1,19 @@
 class Body < ActiveRecord::Base
-  belongs_to :document
+  belongs_to :document, :touch=>true
+  before_save :set_content
 
   def sanitize_content
     coder = HTMLEntities.new
     self.raw_content = coder.decode(raw_content)
     self.summary = coder.decode(summary)
   end
+  
+  def set_content
+   if content.blank? && raw_content
+     update_attributes(:content=>extract_text(raw_content))
+   end
+  end
+  
   
   def get_content
     if content?

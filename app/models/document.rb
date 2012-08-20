@@ -1,6 +1,6 @@
 class Document < ActiveRecord::Base
   has_one :body, :dependent=>:destroy
-  delegate :raw_content, :summary, :to=>:body
+  delegate :raw_content, :summary, :content, :to=>:body
   
   cattr_reader :per_page
   @@per_page = 20
@@ -46,13 +46,12 @@ class Document < ActiveRecord::Base
   def get_url_content(u = print_url)
     begin
       html = open(u).readlines.join(' ')
-      body.update_attribute(:raw_content,html) if html
+      body.update_attributes(:raw_content=>html) if html
     rescue OpenURI::HTTPError
       if u==print_url && u != url
         get_url_content(url)
       end
     end
-    self.touch and body.raw_content
   end
   
   def get_classifications(permanent=nil)
@@ -67,9 +66,6 @@ class Document < ActiveRecord::Base
   
   # Document content 
   
-  def content 
-    Rails.cache.fetch(cache_key+'content'){body.get_content}
-  end
   
   def teaser(size=100)
     @teaser ||= content.split(' ')[0..size].join(' ')+' ...' rescue ''
