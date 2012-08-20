@@ -4,7 +4,8 @@ Nc3::Application.routes.draw do
   
   mount Resque::Server, at: '/resque'
   
-  devise_for :users do
+  devise_for :users 
+  devise_scope :user do
       get "login", :to => "devise/sessions#new"
       get "logout", :to => "devise/sessions#destroy"
   end

@@ -36,6 +36,7 @@ end
  end
 
 gem 'devise'
+gem 'devise-encryptable'
 gem "gchartrb", :require=> 'google_chart'
 gem 'kaminari'
 gem 'simple_form'
