@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   protected
   def get_project
     subdomain = request.subdomains.first
-    unless @project = Project.where(:permalink=>subdomain).first
+    unless @project = Project.where(:permalink=>subdomain).first || Project.where(:permalink=>'demo').first
       raise ActionController::RoutingError.new("Error! Project #{subdomain} does not exist.")
       false
     end
