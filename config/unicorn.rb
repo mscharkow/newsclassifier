@@ -2,7 +2,7 @@ APP_ROOT = File.expand_path(File.dirname(File.dirname(__FILE__)))
 working_directory APP_ROOT
 worker_processes 2
 preload_app true
-timeout 30
+timeout 60
 
 pid  APP_ROOT+ '/tmp/pids/unicorn.pid'
 listen APP_ROOT + "/tmp/sockets/unicorn.sock"
