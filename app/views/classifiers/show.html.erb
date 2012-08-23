@@ -1,6 +1,6 @@
 <h2>Classifier <strong><%= @classifier.name %></strong> (<%= cltype(@classifier)%>)</h2>
 <p class="welcome">
-<%= pluralize(@classifier.documents.count,'document')  %>
+<%= pluralize(@classifier.classifications.size,'document')  %>
 classified so far. 
 	<%= abutton_to 'Edit classifier', edit_classifier_path(@classifier), 'small magenta right'%> <%= abutton_to 'Classify all documents', classify_classifier_path(@classifier), 'small green right'%>
 </p>

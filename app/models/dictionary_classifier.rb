@@ -52,6 +52,9 @@ class DictionaryClassifier < Classifier
     pos, neg = categories
     pos.documents << results
     neg.documents << documents-results
+    Classifier.reset_counters self.id, :classifications
+    Category.reset_counters pos.id, :classifications
+    Category.reset_counters neg.id, :classifications
   end
   
   def terms_for(document)
