@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111205091728) do
+ActiveRecord::Schema.define(:version => 20120823091241) do
 
   create_table "bodies", :force => true do |t|
     t.integer  "document_id"
@@ -33,6 +33,7 @@ ActiveRecord::Schema.define(:version => 20111205091728) do
     t.datetime "updated_at"
     t.integer  "value"
     t.integer  "position"
+    t.integer  "classifications_count", :default => 0
   end
 
   create_table "classifications", :force => true do |t|

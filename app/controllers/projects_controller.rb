@@ -57,8 +57,8 @@ class ProjectsController < ApplicationController
     @stats = {}
     @stats[:least_active_source]=@project.sources.first(:order=>'documents_count')
     @stats[:most_active_source]=@project.sources.last(:order=>'documents_count')
-    @stats[:least_active_user] = @project.users.all.sort_by{|u|u.documents.count}[0]
-    @stats[:most_active_user] = @project.users.all.sort_by{|u|u.documents.count}[-1]
+    @stats[:least_active_user] = @project.users.all.sort_by{|u|u.documents.size}[0]
+    @stats[:most_active_user] = @project.users.all.sort_by{|u|u.documents.size}[-1]
     @stats
   end
 end

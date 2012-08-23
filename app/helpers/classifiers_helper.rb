@@ -20,7 +20,7 @@ module ClassifiersHelper
   end
 
   def classification_chart(classifier)
-    props = classifier.categories.map{|c|[c.name,c.documents.count,nil]}
+    props = classifier.categories.map{|c|[c.name,c.documents.size,nil]}
     
     stacked = GoogleChart::PieChart.new("100x100", "")
     stacked.data_encoding = :text

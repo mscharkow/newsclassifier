@@ -11,14 +11,14 @@ classified so far.
 <%= @classifier.parts.sort.join(', ')%>.</p>
 
 <h3>Categories</h3>
-<p> <%= @classifier.name%> has <%= pluralize(@classifier.categories.count,'category')%>.</p>
+<p> <%= @classifier.name%> has <%= pluralize(@classifier.categories.size,'category')%>.</p>
 <table>
 	<thead><th>Category</th><th>Description</th><th class="currency">Documents</th><th class="currency">Percent</th><thead>
 	<% @classifier.categories.each do | cat | %>
 		<tr class="<%= cycle('odd','even')%>">
 			<td><strong><%= cat.name %></strong></td>
 			<td><%= cat.description%></td>
-			<td class="currency"><%= cat.documents.count%></td>
+			<td class="currency"><%= cat.documents.size%></td>
 			<td class="currency"><%=cat.percent.round%></td>
 		</tr>
 		<%end%>

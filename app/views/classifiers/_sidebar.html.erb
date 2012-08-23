@@ -4,7 +4,7 @@
   <tr class="<%=cycle('odd','even')%>">
 	<td><%= link_to classifier.name, classifier_path(classifier)%></td>
 	<td><%= cltype(classifier)%></td>
-	<td><%= pluralize(@classifier.categories.count,'category')%></td>
+	<td><%= pluralize(@classifier.categories.size,'category')%></td>
 	</tr>
 <% end %>
 </table>

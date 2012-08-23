@@ -11,8 +11,8 @@ class Category < ActiveRecord::Base
   end
   
   def percent
-    return 0 if classifier.classifications.count == 0
-    self.classifications.count*100.0/classifier.classifications.count
+    return 0 if classifier.classifications.size == 0
+    classifications.size*100.0/classifier.classifications.size
   end
   
   def val 

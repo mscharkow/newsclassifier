@@ -14,7 +14,7 @@
 					<%end%>
 								</td>
 
-				<td><% classification_chart(classifier)%> 	 <%= classifier.categories.count %></td>
+				<td><% classification_chart(classifier)%> 	 <%= classifier.categories.size %></td>
 				<td>
 
 	<% classifier.categories.each do | cat | -%>
@@ -22,7 +22,7 @@
 				<% end %> 
 			</td>
 
-		<td>manual: <%= classifier.classifications.manual.count %>, automatic: <%= classifier.classifications.auto.count %></td>
+		<td>manual: <%= classifier.classifications.manual.count %>, automatic: <%= classifier.classifications.auto.size %></td>
 		<td class="currency">
 		<%= abutton_to 'Classify documents', classify_classifier_url(classifier), 'small green' unless classifier.type.blank?%> </td>
 	<td class="currency"><%=  button_to 'Delete', classifier_url(classifier), :method=>:delete, :class=>'small red delete' %>
