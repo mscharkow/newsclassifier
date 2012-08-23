@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120823091241) do
+ActiveRecord::Schema.define(:version => 20120823095409) do
 
   create_table "bodies", :force => true do |t|
     t.integer  "document_id"
@@ -56,11 +56,12 @@ ActiveRecord::Schema.define(:version => 20120823091241) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "description"
-    t.integer  "categories_count", :default => 0
+    t.integer  "categories_count",      :default => 0
     t.text     "regexp"
     t.string   "type"
     t.text     "parts"
     t.text     "reliability"
+    t.integer  "classifications_count", :default => 0
   end
 
   create_table "classifiers_users", :id => false, :force => true do |t|

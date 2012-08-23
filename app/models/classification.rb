@@ -2,7 +2,7 @@ class Classification < ActiveRecord::Base
   belongs_to :document #, :counter_cache => true
   belongs_to :category, :counter_cache => true
   belongs_to :user
-  belongs_to :classifier
+  belongs_to :classifier,:counter_cache => true
   
   #named_scope :by_project, lambda { |project| { :conditions => ['classifier_id in (?) and document_id in(?)', project.classifiers,project.documents(:select=>:id)] }}
   scope :auto, where(:user_id => nil)
