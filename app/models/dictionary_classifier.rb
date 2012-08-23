@@ -74,7 +74,7 @@ class DictionaryClassifier < Classifier
     doc_set = Document.where({id:documents})
     results = []
     if regexp[0] == '%'
-      terms = regexp.gsub('%','').split("\n").map{|i|"%#{i}%" unless i.blank?}.compact
+      terms = regexp.gsub('%','').split(/\r?\n/).map{|i|"%#{i}%" unless i.blank?}.compact
       results << doc_set.where{title.like_any terms}.pluck('documents.id') if parts.include?('title')
       results << doc_set.where{url.like_any terms}.pluck('documents.id') if parts.include?('url')
       results << doc_set.joins(:body).where{body.summary.like_any terms}.pluck('documents.id') if parts.include?('summary')
