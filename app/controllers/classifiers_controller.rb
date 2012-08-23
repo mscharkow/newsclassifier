@@ -62,16 +62,12 @@ class ClassifiersController < ApplicationController
   end
   
   def classify
-    @project.documents.find_in_batches(:select=>:id) do |docs| 
-      Resque.enqueue(BatchClassifier, [@classifier.id], docs.map(&:id))
-    end
+    Resque.enqueue(BatchClassifier, [@classifier.id])
     redirect_to classifiers_path, :notice => "Classification for #{@classifier.name} started. This may take a while."
   end
   
   def classify_all
-    @project.documents.find_in_batches(:select=>:id) do |docs| 
-      Resque.enqueue(BatchClassifier, @project.classifiers.auto.all.map(&:id), docs.map(&:id))
-    end
+    Resque.enqueue(BatchClassifier, @project.classifiers.auto.all.map(&:id))
     redirect_to classifiers_path, :notice => "Classification for all classifiers started. This may take a long time."
   end
   

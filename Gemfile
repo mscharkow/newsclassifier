@@ -1,8 +1,7 @@
 source 'http://rubygems.org'
 
 gem 'rails', '~> 3.1.3'
-gem 'sqlite3'
-gem 'mysql2'
+gem 'pg'
 
 
 group :assets do
@@ -26,6 +25,7 @@ group :test do
 end
 
  group :development, :test do
+   gem 'sqlite3'
    gem 'rspec-rails'
    gem 'guard-rspec'
    gem 'guard-livereload'

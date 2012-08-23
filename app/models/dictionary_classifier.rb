@@ -39,6 +39,21 @@ class DictionaryClassifier < Classifier
     cl
   end
   
+  def classify_batch(documents)
+    classifications.where({document_id:documents}).destroy_all
+    results = []
+    results << Document.where({id:documents}).title_matches(regexp) if parts.include?('title')
+    results << Document.where({id:documents}).url_matches(regexp) if parts.include?('url')
+    results << Document.where({id:documents}).summary_matches(regexp) if parts.include?('summary')
+    results << Document.where({id:documents}).content_matches(regexp) if parts.include?('content')
+    results << Document.where({id:documents}).raw_content_matches(regexp) if parts.include?('raw_content')
+    results = results.flatten.uniq
+    puts results.count
+    pos, neg = categories
+    pos.documents << results
+    neg.documents << documents-results
+  end
+  
   def terms_for(document)
     relevant_content(document).scan(reg)
   end

@@ -16,15 +16,31 @@ class Document < ActiveRecord::Base
   before_save :sanitize_content
   before_create :build_body
   
-  scope :by_project, lambda { |project| project.samples.active.first ? where(['id  in (?)', project.samples.active.first.items]) : where(['source_id in (?)', project.sources]) }
+  scope :by_project, 
+  lambda { |project| project.samples.active.first ? where(['id  in (?)',
+  project.samples.active.first.items]) : where(['source_id in (?)', 
+  project.sources]) }
   
-  scope :for_user, lambda{|user| where(['documents.id NOT in (?)',user.documents.map(&:id)])}
-  scope :no_raw_content, :joins => :body, :conditions => ['bodies.raw_content is ?', nil]
-  scope :no_content, :joins => :body, :conditions => ['bodies.content is ?', nil]
+  scope :for_user, 
+  lambda{|user| where(['documents.id NOT in (?)',user.documents.map(&:id)])}
+  
+  scope :no_raw_content, 
+  :joins => :body, :conditions => ['bodies.raw_content is ?', nil]
+  scope :no_content, 
+  :joins => :body, :conditions => ['bodies.content is ?', nil]
+  
   scope :without_ids, lambda { |ids| {:conditions=> ['id not in (?)', ids ]}}
   scope :with_ids, lambda { |ids| {:conditions=> ['id  in (?)', ids ]}}
  
- 
+  scope :title_matches, lambda {|regexp| find_by_regexp(:title,regexp)}
+  scope :url_matches, lambda {|regexp| find_by_regexp(:url,regexp)}
+  scope :summary_matches,
+  lambda {|regexp|includes(:body).find_by_regexp('bodies.summary',regexp)}
+  scope :content_matches,
+  lambda {|regexp|includes(:body).find_by_regexp('bodies.content',regexp)}
+  scope :raw_content_matches,
+  lambda{|regexp|includes(:body).find_by_regexp('bodies.raw_content',regexp)}
+  
   def convert_charset(to='utf-8',from='iso-8859-1')
     self.update_attribute(:title, Iconv.conv(to,from,title))
     self.body.update_attributes(

@@ -1,4 +1,5 @@
 require 'string_extensions'
+require 'ar_extensions'
 require 'feed_finder'
 require 'link_extractor'
 require 'url_helper'

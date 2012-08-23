@@ -2,10 +2,10 @@
 
 class BatchClassifier
   @queue = :classifiers
-  def self.perform(classifier_ids,document_ids)
+  def self.perform(classifier_ids)
     classifiers = Classifier.auto.find(classifier_ids,:include=>:categories)
-    Document.where(:id=>document_ids).find_each(:include=>[:body,:classifications]) do |doc|
-      classifiers.each{|c|c.classify(doc,true)}
+    classifiers.first.project.documents.find_in_batches(:batch_size=>5000,:select=>:id) do |docs|
+      classifiers.each{|c|c.classify_batch(docs)}
     end
   end
 end
