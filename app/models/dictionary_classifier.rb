@@ -40,18 +40,26 @@ class DictionaryClassifier < Classifier
   end
   
   def classify_batch(documents)
-    classifications.where({document_id:documents}).destroy_all
+    documents = documents.map(&:id).compact.uniq
+    Classification.delete_all({document_id:documents,classifier_id:id})
     results = []
-    results << Document.where({id:documents}).title_matches(regexp) if parts.include?('title')
-    results << Document.where({id:documents}).url_matches(regexp) if parts.include?('url')
-    results << Document.where({id:documents}).summary_matches(regexp) if parts.include?('summary')
-    results << Document.where({id:documents}).content_matches(regexp) if parts.include?('content')
-    results << Document.where({id:documents}).raw_content_matches(regexp) if parts.include?('raw_content')
-    results = results.flatten.uniq
-    puts results.count
+    results << Document.where({id:documents}).title_matches(regexp).pluck(:id) if parts.include?('title')
+    results << Document.where({id:documents}).url_matches(regexp).pluck(:id) if parts.include?('url')
+    results << Document.where({id:documents}).summary_matches(regexp).pluck(:id) if parts.include?('summary')
+    results << Document.where({id:documents}).content_matches(regexp).pluck(:id) if parts.include?('content')
+    results << Document.where({id:documents}).raw_content_matches(regexp).pluck(:id) if parts.include?('raw_content')
+    results = results.flatten.compact.uniq
+    puts documents.size, results.size, (documents-results).size
     pos, neg = categories
-    pos.documents << results
-    neg.documents << documents-results
+    
+    columns = [:document_id,:category_id,:classifier_id]
+    cl_pos = results.map{|i| [i,pos.id,self.id]}
+    cl_neg = (documents-results).map{|i| [i,neg.id,self.id]}
+    Classification.import columns, cl_pos+cl_neg, :validate => false
+
+
+    #pos.documents << results
+    #neg.documents << documents-results
     Classifier.reset_counters self.id, :classifications
     Category.reset_counters pos.id, :classifications
     Category.reset_counters neg.id, :classifications
