@@ -4,7 +4,7 @@ class AddCategoryCounter < ActiveRecord::Migration
 
     Category.reset_column_information
     Category.find(:all).each do |p|
-      Category.update_counters p.id, :classifications_count => p.classifications.length
+      Category.update_counters p.id, :classifications_count => p.classifications.count
     end
   end
 
