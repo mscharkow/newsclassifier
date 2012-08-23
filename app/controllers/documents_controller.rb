@@ -32,7 +32,7 @@ class DocumentsController < ApplicationController
     if request.format == 'html'
       @documents = docs.order('pubdate DESC').page(params[:page])
     elsif request.format == 'json'
-      @documents = docs.count(:group=>'DATE_FORMAT(pubdate,"%Y-%m-%d")').map{|k,v|["#{k} 00:00PM",v]}.to_json
+      @documents = docs.count(:order => 'DATE(pubdate) DESC', :group => ["DATE(pubdate)"]).map{|k,v|["#{k} 00:00PM",v]}.to_json
     else
       @documents = docs.order('pubdate DESC')
     end
