@@ -48,9 +48,7 @@ class Project < ActiveRecord::Base
   end
 
   def csv
-    out = Rails.cache.fetch(csv_cache_key){Output.new(self).to_csv}
-    File.open("/tmp/documents_#{id}.csv",'w'){|f|f.write(out)}
-    out
+    Rails.cache.fetch(csv_cache_key){Output.new(self).to_csv}
   end
   
   def write_weekly(d=nil)

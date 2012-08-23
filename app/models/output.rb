@@ -31,7 +31,7 @@ class Output
     header = [std, classifier_list].flatten.join(';')
     out = []
     out << header+"\n"
-    Document.by_project(@project).find_in_batches(:conditions=>conditions,:include=>[:source]) do | documents|
+    Document.by_project(@project).find_in_batches(:batch_size=>5000,:conditions=>conditions,:include=>[:source]) do | documents|
       key = "#{documents.first.classifications.last.try(:cache_key)}#{documents.last.classifications.last.try(:cache_key)}" || Time.now.to_s
       out << Rails.cache.fetch(key) do 
         ha = self.create_hash(classifiers,documents)

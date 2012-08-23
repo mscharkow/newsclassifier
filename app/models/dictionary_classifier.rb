@@ -43,11 +43,12 @@ class DictionaryClassifier < Classifier
     documents = documents.map(&:id).compact.uniq
     Classification.delete_all({document_id:documents,classifier_id:id})
     results = []
-    results << Document.where({id:documents}).title_matches(regexp).pluck('documents.id') if parts.include?('title')
-    results << Document.where({id:documents}).url_matches(regexp).pluck('documents.id') if parts.include?('url')
-    results << Document.where({id:documents}).summary_matches(regexp).pluck('documents.id') if parts.include?('summary')
-    results << Document.where({id:documents}).content_matches(regexp).pluck('documents.id') if parts.include?('content')
-    results << Document.where({id:documents}).raw_content_matches(regexp).pluck('documents.id') if parts.include?('raw_content')
+    doc_set = Document.where({id:documents})
+    results << doc_set.title_matches(regexp).pluck('documents.id') if parts.include?('title')
+    results << doc_set.url_matches(regexp).pluck('documents.id') if parts.include?('url')
+    results << doc_set.summary_matches(regexp).pluck('documents.id') if parts.include?('summary')
+    results << doc_set.content_matches(regexp).pluck('documents.id') if parts.include?('content')
+    results << doc_set.raw_content_matches(regexp).pluck('documents.id') if parts.include?('raw_content')
     results = results.flatten.compact.uniq
     puts documents.size, results.size, (documents-results).size
     pos, neg = categories

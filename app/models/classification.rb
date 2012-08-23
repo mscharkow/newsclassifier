@@ -30,7 +30,7 @@ class Classification < ActiveRecord::Base
   end
   
   def code
-    user_id ? self.category.val : score rescue 'NA'
+    category.val
   end
   
 end
