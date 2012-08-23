@@ -62,12 +62,12 @@ class ClassifiersController < ApplicationController
   end
   
   def classify
-    Resque.enqueue(BatchClassifier, [@classifier.id])
+    Resque.enqueue(StartBatchClassifier, [@classifier.id])
     redirect_to classifiers_path, :notice => "Classification for #{@classifier.name} started. This may take a while."
   end
   
   def classify_all
-    Resque.enqueue(BatchClassifier, @project.classifiers.auto.all.map(&:id))
+    Resque.enqueue(StartBatchClassifier, @project.classifiers.auto.all.map(&:id))
     redirect_to classifiers_path, :notice => "Classification for all classifiers started. This may take a long time."
   end
   

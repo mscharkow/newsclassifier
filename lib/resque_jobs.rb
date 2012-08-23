@@ -1,12 +1,23 @@
 # Resque Workers
 
-class BatchClassifier
+class StartBatchClassifier
   @queue = :classifiers
   def self.perform(classifier_ids)
     classifiers = Classifier.auto.find(classifier_ids,:include=>:categories)
     classifiers.first.project.documents.find_in_batches(:batch_size=>5000,:select=>:id) do |docs|
-      classifiers.each{|c|c.classify_batch(docs)}
+       classifiers.each do | cl| 
+         Resque.enqueue(BatchClassifier, cl.id, docs.map(&:id))
+       end
     end
+  end
+end
+
+class BatchClassifier
+  @queue = :classifiers
+  def self.perform(classifier_id,documents_ids)
+    classifier = Classifier.find(classifier_id)
+    docs = Document.where({id:documents_ids})
+    classifier.classify_batch(docs)
   end
 end
 
