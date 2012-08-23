@@ -35,11 +35,11 @@ class Document < ActiveRecord::Base
   scope :title_matches, lambda {|regexp| find_by_regexp(:title,regexp)}
   scope :url_matches, lambda {|regexp| find_by_regexp(:url,regexp)}
   scope :summary_matches,
-  lambda {|regexp|includes(:body).find_by_regexp('bodies.summary',regexp)}
+  lambda {|regexp|joins(:body).find_by_regexp('bodies.summary',regexp)}
   scope :content_matches,
-  lambda {|regexp|includes(:body).find_by_regexp('bodies.content',regexp)}
+  lambda {|regexp|joins(:body).find_by_regexp('bodies.content',regexp)}
   scope :raw_content_matches,
-  lambda{|regexp|includes(:body).find_by_regexp('bodies.raw_content',regexp)}
+  lambda{|regexp|joins(:body).find_by_regexp('bodies.raw_content',regexp)}
   
   def convert_charset(to='utf-8',from='iso-8859-1')
     self.update_attribute(:title, Iconv.conv(to,from,title))
