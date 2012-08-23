@@ -38,6 +38,7 @@ end
 gem 'devise'
 gem 'devise-encryptable'
 gem 'activerecord-import'
+gem 'squeel'
 
 gem "gchartrb", :require=> 'google_chart'
 gem 'kaminari'

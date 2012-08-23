@@ -42,14 +42,8 @@ class DictionaryClassifier < Classifier
   def classify_batch(documents)
     documents = documents.map(&:id).compact.uniq
     Classification.delete_all({document_id:documents,classifier_id:id})
-    results = []
-    doc_set = Document.where({id:documents})
-    results << doc_set.title_matches(regexp).pluck('documents.id') if parts.include?('title')
-    results << doc_set.url_matches(regexp).pluck('documents.id') if parts.include?('url')
-    results << doc_set.summary_matches(regexp).pluck('documents.id') if parts.include?('summary')
-    results << doc_set.content_matches(regexp).pluck('documents.id') if parts.include?('content')
-    results << doc_set.raw_content_matches(regexp).pluck('documents.id') if parts.include?('raw_content')
-    results = results.flatten.compact.uniq
+    
+    results = get_matching_documents(documents)
     puts documents.size, results.size, (documents-results).size
     pos, neg = categories
     
@@ -73,4 +67,28 @@ class DictionaryClassifier < Classifier
   def classify_all
     project.documents.find_each{|d|self.classify(d)}
   end
+  
+  private
+  
+  def get_matching_documents(documents)
+    doc_set = Document.where({id:documents})
+    results = []
+    if regexp[0] == '%'
+      terms = regexp.gsub('%','').split("\n").map{|i|"%#{i}%"}
+      results << doc_set.where{title.like_any terms}.pluck('documents.id') if parts.include?('title')
+      results << doc_set.where{url.like_any terms}.pluck('documents.id') if parts.include?('url')
+      results << doc_set.joins(:body).where{body.summary.like_any terms}.pluck('documents.id') if parts.include?('summary')
+      results << doc_set.joins(:body).where{body.content.like_any terms}.pluck('documents.id') if parts.include?('content')
+      results << doc_set.joins(:body).where{body.raw_content.like_any terms}.pluck('documents.id') if parts.include?('raw_content')
+    else
+      results << doc_set.title_matches(regexp).pluck('documents.id') if parts.include?('title')
+      results << doc_set.url_matches(regexp).pluck('documents.id') if parts.include?('url')
+      results << doc_set.summary_matches(regexp).pluck('documents.id') if parts.include?('summary')
+      results << doc_set.content_matches(regexp).pluck('documents.id') if parts.include?('content')
+      results << doc_set.raw_content_matches(regexp).pluck('documents.id') if parts.include?('raw_content')
+    end
+    results.flatten.compact.uniq
+  end
+  
+  
 end
