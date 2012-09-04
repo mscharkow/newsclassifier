@@ -13,6 +13,9 @@
 
  <%= stylesheet_link_tag 'bootstrap.min', 'reveal', 'jquery.jqplot.min', 'application.css' %>
  <%= csrf_meta_tag %>
+
+  <%= javascript_include_tag :defaults, 'jquery.jqplot.min', 'jqplot.dateAxisRenderer.min','jqplot.json2.min','bootstrap.min', 'jquery.reveal' %>
+
 </head>
 <body>
 	<div class='navbar'>
@@ -69,7 +72,7 @@
       </div>
   
   </div>
-  <%= javascript_include_tag :defaults, 'jquery.jqplot.min.js', 'jqplot.dateAxisRenderer.min.js', 'jqplot.json2.min.js', 'jquery.reveal' %>
+
 </body>
 </html>
 
