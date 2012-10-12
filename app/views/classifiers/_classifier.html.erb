@@ -1,7 +1,7 @@
-<tr class="<%= cycle('odd','even')%>">
+<tr>
 		<td class="toggle">
-		    <%= link_to classifier.name, classifier_path(classifier)
-		%>		<%= abutton_to 'Edit', edit_classifier_path(classifier)%>
+		  <%= link_to classifier.name, classifier_path(classifier)%>
+			<%= abutton_to 'Edit', edit_classifier_path(classifier),{:style=>'btn-small'}%>
 		
 		</td>
     			<td><%= cltype(classifier)  %></td>
@@ -10,21 +10,20 @@
 						Manual: <%= classifier.reliability[:manual][1][0..2].join(', ') rescue nil %>, 
 						Automatic:  <%=classifier.reliability[:auto][1][0..2].join(',  ') rescue nil %>
 					<%else%>
-					Not available
+					&dash;
 					<%end%>
-								</td>
+					</td>
 
-				<td><% classification_chart(classifier)%> 	 <%= classifier.categories.size %></td>
+				<td><%= pluralize(classifier.categories.size,'category') %></td>
 				<td>
 
 	<% classifier.categories.each do | cat | -%>
-					<%= link_to "#{cat.name}: #{cat.percent.round}% ", documents_path(:category=>cat.id) %>
+					<%= link_to "#{cat.name}: #{cat.classifications.size} (#{cat.percent.round(1)}%) ", documents_path(:category=>cat.id) %>
 				<% end %> 
 			</td>
 
 		<td><%= classifier.classifications.size %></td>
-		<td class="currency">
-		<%= abutton_to 'Classify documents', classify_classifier_url(classifier) unless classifier.type.blank?%> </td>
-	<td class="currency"><%=  button_to 'Delete', classifier_url(classifier), :method=>:delete, :class=>'btn btn-danger btn-small' %>
+		<td>
+		<%= abutton_to 'Classify documents', classify_classifier_url(classifier),{style:'btn-small'} unless classifier.type.blank?%></td>
 		
 </tr>

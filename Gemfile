@@ -41,8 +41,9 @@ gem 'devise-encryptable'
 gem 'activerecord-import'
 gem 'squeel'
 
-gem "gchartrb", :require=> 'google_chart'
 gem 'kaminari'
+gem 'bootstrap-kaminari-views'
+
 gem 'simple_form'
 gem 'resque'
 gem 'foreman'

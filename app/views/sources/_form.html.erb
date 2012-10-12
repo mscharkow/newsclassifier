@@ -1,7 +1,7 @@
 <%= simple_form_for(@source) do |f| %>
 <h3>Basic information for the source</h3>  
 <%= f.input :name  %>
-  <%= f.input :urls, :label=>"RSS/ATOM feed URLs",:hint=>'Enter one URL per line.',:input_html=>{:cols=>50,:rows=>10} %>
+  <%= f.input :urls, :label=>"RSS/ATOM feed URLs",:hint=>'Enter one URL per line.',:input_html=>{:class=>'span8',:rows=>10} %>
 <h3>Regular content updates</h3>
 	<%= f.input :auto_update, :label=>'Update feed automatically' %>
 		
@@ -15,9 +15,11 @@
 	<%= m.input :fulltext_from_url, :label=>'Get document content from URL',:required=>false, :as=>:boolean,:input_html=>opts%>
 			
 <h3>Document preprocessing</h3>
-			<%= m.input :print_regexp, :label=>'Find/Replace for print URL', :required=>false,:hint=>'Example: index print', :input_html=>{:value=>@source.metadata[:print_regexp]}%>
-			<%= m.input :filter, :label=>'CSS selector for body text', :required=>false, :hint=>'Example: div#article', :input_html=>{:value=>@source.metadata[:filter]}%>
+			<%= m.input :print_regexp, :label=>'Find/Replace for print URL', :required=>false,:hint=>'Example: index print', :input_html=>{:class=>'span8',:value=>@source.metadata[:print_regexp]}%>
+			<%= m.input :filter, :label=>'CSS selector for body text', :required=>false, :hint=>'Example: div#article', :input_html=>{:class=>'span8',:value=>@source.metadata[:filter]}%>
 	<% end %>
 	  
-	<%= f.submit "Save" %>
+<p>
+<%= f.submit "Save", :class=>'btn btn-success' %> 
+<%= abutton_to 'Back', @source unless @source.new_record?%></p>
 <% end %>

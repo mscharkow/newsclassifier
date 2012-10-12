@@ -34,12 +34,19 @@ class Source < ActiveRecord::Base
     end
   end
   
+  def fetch_metadata(field)
+     if metadata.fetch(field,nil).blank?
+       false
+     else
+       metadata.fetch(field)
+     end
+  end
 
   
   def export
     to_json(:include=>{
               :documents=>{:include=>
-                              {:body=>{:except=>[:document_id,:created_at,:updated_at,:id]}
+                          {:body=>{:except=>[:document_id,:created_at,:updated_at,:id]}
                           },:except => [ :id, :source_id,:classifications_count,:updated_at]}
             },:except => [ :id,:documents_count,:project_id,:updated_at ])
   end

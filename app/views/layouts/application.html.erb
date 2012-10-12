@@ -14,11 +14,11 @@
  <%= stylesheet_link_tag 'bootstrap.min', 'reveal', 'jquery.jqplot.min', 'application.css' %>
  <%= csrf_meta_tag %>
 
-  <%= javascript_include_tag :defaults, 'jquery.jqplot.min', 'jqplot.dateAxisRenderer.min','jqplot.json2.min','bootstrap.min', 'jquery.reveal' %>
+  <%= javascript_include_tag :defaults, 'bootstrap.min', 'jquery.reveal', 'jquery.flot' %>
 
 </head>
 <body>
-	<div class='navbar'>
+	<div class='navbar navbar-inverse'>
   	<div class="navbar-inner">
     	<div class="container-fluid">
       	<%= link_to "NC | #{@project.name}", root_path, {:class=>'brand'}%>
@@ -44,16 +44,16 @@
     </div>
   <div class="container-fluid">
 	  <% flash.each do | key,msg |%>
-          <div class="alert alert-<%=key%>"><%=msg%></div>
+          <div class="alert alert-info"><%=msg%></div>
      <%end%>
     <% if @fullpage %>
 <%= yield %>
     <%else %>
       <div class="row-fluid">
-          <div class="span10">
+          <div class="span8">
             <%= yield %>
           </div>
-          <div class="span2">
+          <div class="span4 sidebar">
         <%begin%>
           <%=render(:partial => "sidebar")%>
         <%rescue MissingTemplate%>

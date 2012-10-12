@@ -43,3 +43,10 @@ class ResetSource
     Source.find(source_id).documents.destroy_all
   end
 end
+
+class ResetClassifier
+  @queue = :classifiers
+  def self.perform(classifier_id)
+    Classifier.find(classifier_id).classifications.destroy_all
+  end
+end

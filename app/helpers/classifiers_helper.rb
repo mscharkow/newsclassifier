@@ -19,17 +19,7 @@ module ClassifiersHelper
       "#{catname} (#{prob})"
   end
 
-  def classification_chart(classifier)
-    props = classifier.categories.map{|c|[c.name,c.documents.size,nil]}
-    
-    stacked = GoogleChart::PieChart.new("100x100", "")
-    stacked.data_encoding = :text
-    props.each do |p|
-      stacked.data p[0],p[1]
-    end 
-    stacked.show_labels = false
-    tag 'img', :src=>stacked.to_url+'&chco=007d99&chp=-1.54&chf=bg,s,EFEFEF00'
-  end
+
   
   def classifier_sources(classifier)
     sourcelist = {}

@@ -1,13 +1,13 @@
 <script class="code" type="text/javascript">
 	$(document).ready(function(){
 	 $.getJSON('/documents.json', function(data){
-	  var plot1 = $.jqplot('chart1', [data], tl_opts );
+	  var plot1 = $.plot($('#chart1'), [data], dashboard_opts);
 	});
 });
 </script>
 <div class="row-fluid">
 	<div class="span8">
-		<h1 id="page-heading">Welcome to project <%= link_to @project.name, root_path %>.</h1>
+		<h1 id="page-heading">Project <%= @project.name %>.</h1>
 
 		<p class="lead"> It currently contains <%= link_to pluralize(@project.documents.count, 'document'), documents_path%> from <%= link_to pluralize(@project.sources.count, 'source'), sources_path%> and <%= link_to pluralize(@project.samples.count, 'sample'), samples_path%>.
 	<br/>
@@ -31,31 +31,31 @@
 
 <div class="row-fluid">
 	<div class="span4">
-		<h2>Documents</h2>
-			<div id="chart1" style="margin-left:1em;width:99%;height:80px;margin-bottom:1em;"></div>
+		<h3>Documents</h3>
+			<div id="chart1"></div>
 			<p><%= abutton_to 'View the latest documents', documents_path%>
 				<%= abutton_to 'Download CSV', {:controller=>'documents',:format=>'csv',:params=>params}%></p>
 		</div>
 
 
 		<div class="span4">
-			<h2>Sources</h2>
-				<p> The project covers <%=pluralize(@project.sources.count, 'source')%>.</p>
+			<h3>Sources</h3>
+				<p> The project covers <%=pluralize(@project.sources.size, 'source')%>.</p>
 			<table class="table table-condensed">
 				<% if stat = @stats[:most_active_source]%>
 				<tr><th>Most active</th>
-					<td><%= short_source(stat) %></td> 
-					<td class="currency"><%= stat.documents.count%></td>
-					<td class="currency"><%= stat.last_pubdate.strftime('%Y-%m-%d %H:%M') rescue nil%></td>
+					<td><%= short_source(stat,12) %></td> 
+					<td class="currency"><%= pluralize(stat.documents.size,'document')%></td>
+					<td class="currency"><%= time_ago_in_words(stat.last_pubdate)+' ago' rescue nil%></td>
 				</tr> 
 				<%end%>
 				
 				<% if stat = @stats[:least_active_source]%>
 				<tr>
 					<th>Least active</th> 
-					<td><%= short_source(stat) %></td> 
-					<td class="currency"><%= stat.documents.count%></td>
-					<td class="currency"><%= stat.last_pubdate.strftime('%Y-%m-%d %H:%M') rescue nil%></td>
+					<td><%= short_source(stat,12) %></td> 
+					<td class="currency"><%= pluralize(stat.documents.size,'document')%></td>
+					<td class="currency"><%= time_ago_in_words(stat.last_pubdate)+' ago' rescue nil%></td>
 				</tr> 
 				<%end%>
 
@@ -64,7 +64,7 @@
 		</div>
 		
 		<div class="span4">
-			<h2>Samples</h2>
+			<h3>Samples</h3>
 			<%if @project.samples.count == 0 %>
 			<p> No samples have been drawn yet.</p>
 			<p><%= abutton_to 'Draw new sample', new_sample_path%></p>
@@ -84,7 +84,7 @@
 	<div class="row-fluid">
 		
 		<div class="span4">
-			<h2>Manual Classifiers</h2> 
+			<h3>Manual Classifiers</h3> 
 			<p> <%=pluralize(@project.classifiers.manual.count, 'classifier')%> in the codebook.</p> 
 			<table> 
 				<% if stat = @stats[:most_reliable_classifier]%>
@@ -107,7 +107,7 @@
    	</div>
 		
 		<div class="span4">
-			<h2>Automatic Classifiers</h2> 
+			<h3>Automatic Classifiers</h3> 
 			<p> <%=pluralize(@project.classifiers.auto.count, 'classifier')%> in the codebook.</p> 
 			<table> 
 				<% if stat = @stats[:most_prevalent]%>
@@ -130,7 +130,7 @@
 		</div>
 		
 		<div class="span4">
-			<h2>Coders</h2>
+			<h3>Coders</h3>
 				<p> <%=pluralize(@project.users.count, 'coder')%> employed in this project.</p>
 				<table>
 				<% if @project.users.count > 1%>

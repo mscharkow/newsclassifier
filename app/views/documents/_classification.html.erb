@@ -1,9 +1,8 @@
 <%if @classifiers.include?(classification.classifier) && classification.user == current_user%>
 
-<tr class="cl_form <%=cycle('odd','even') %>">
-    
+<tr>
 <td class="classifier_name"><%=h classification.classifier.name%></td>
-<td>
+<td class="right">
 	<%= fields_for 'classifications[]', classification do | f | %>
 	<%= f.collection_select(:category_id , classification.classifier.categories, "id", "name", {:include_blank => true}, :index=>nil) %>
 	<%= f.hidden_field :classifier_id, :value=>classification.classifier.id, :index=>nil%>

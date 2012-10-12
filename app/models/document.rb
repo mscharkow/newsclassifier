@@ -2,8 +2,7 @@ class Document < ActiveRecord::Base
   has_one :body, :dependent=>:destroy
   delegate :raw_content, :summary, :content, :to=>:body
   
-  cattr_reader :per_page
-  @@per_page = 20
+  paginates_per 20
   
   belongs_to :source, :counter_cache => true
   has_many :classifications, :dependent => :destroy

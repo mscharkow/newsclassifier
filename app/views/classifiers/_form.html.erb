@@ -1,34 +1,29 @@
-<%= simple_form_for @classifier, :html => { :class => 'form-horizontal' } do |f| %>
+<%= simple_form_for @classifier do |f| %>
   <%= f.input :name %>
-  <%= f.input :description, :input_html=>{:rows=>4}%>
-  <%= f.input :parts, :collection=>@classifier.default_parts, :as=>:check_boxes%>
+  <%= f.input :description, :input_html=>{:class=>'span8',:rows=>5}%>
+  <%= f.input :parts, :collection=>@classifier.default_parts, :as=>:check_boxes,:item_wrapper_class=>'inline'%>
 
 <% if @classifier.type.blank?%>
-
-
-
 	<div id="categories">
 	<h3>Categories</h3>
 		<%= f.simple_fields_for :categories do |cat| %>
 		<div class="category">    
 		<%= cat.input :name, :wrapper_html=>{:class=>'nobreak'} %>
 				<%= cat.input :value, :wrapper_html=>{:class=>'nobreak', :size=>4} %>
-				<%= cat.input :description, :input_html=>{:rows=>2,:cols=>70} %>
-				<%= cat.hidden_field :_destroy, :input_html=>{:class=>'should_destroy'} %>
-		    <%= abutton_to '- Remove this category', '#', {style:'delcat small'} %>
+				<%= cat.input :description, :input_html=>{:rows=>2,:cols=>70} %> 
 		</div>
 		<% end %>
 	</div>
-	<a name="add"></a>
-	<%= abutton_to '+ Add category', '#add', {style:'addcat blue'}%>
 	<h3>Coders</h3>
 	<%= f.association :users, :as => :check_boxes %>
 
 
 <% else %>
-	<%= f.input :regexp, :input_html=>{:rows=>4} %>
+	<%= f.input :regexp, :input_html=>{:class=>'span8',:rows=>10},:label=>'Pattern' %>
 	<%= f.hidden_field :type %>
 	<% end %>	
 <p>
-  <%= f.submit "Save" %></p>
+<%= f.submit "Save", :class=>'btn btn-success' %> 
+<%= abutton_to 'Back', @classifier unless @classifier.new_record?%> 
+</p>
 <% end %>

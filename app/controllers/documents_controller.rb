@@ -32,15 +32,15 @@ class DocumentsController < ApplicationController
     if request.format == 'html'
       @documents = docs.order('pubdate DESC').page(params[:page])
     elsif request.format == 'json'
-      @documents = docs.count(:order => 'DATE(pubdate) DESC', :group => ["DATE(pubdate)"]).map{|k,v|["#{k} 00:00PM",v]}.to_json
+      @documents = collect_stats(docs).to_json
     else
       @documents = docs.order('pubdate DESC')
     end
     
     respond_to do |format|
       format.html # index.html.erb
-      #format.csv {@project.csv and send_file("/tmp/documents_#{@project.id}.csv", :type=>"text/csv", :x_sendfile=>true) unless params[:links] }
-      format.csv {render :text=>@project.csv unless params[:links] }
+
+      format.csv  {render :text=>@project.csv}
       format.text {render :text => @documents.map(&:title).join("\n")}
       format.xml  {render :xml => @documents }
       format.json {render :json => @documents}
@@ -82,6 +82,13 @@ class DocumentsController < ApplicationController
     @next = session[:doclist].pop
   end
   
-
+  def collect_stats(docs)
+    case params[:stats]
+    when 'day' then docs.group('DATE_FORMAT(pubdate,"%a")').size
+    when 'hour' then docs.group('DATE_FORMAT(pubdate,"%H")').size
+    else  
+      docs.group("DATE_FORMAT(pubdate,'%Y-%m-%d %H:00')").size.map{|k,v|[Time.parse(k).to_i*1000,v]}
+    end
+  end
   
 end

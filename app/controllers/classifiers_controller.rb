@@ -14,7 +14,7 @@ class ClassifiersController < ApplicationController
   end
 
   def new
-    @classifier = Classifier.new(:parts => %w(title content))
+    @classifier = @project.classifiers.build(:parts => %w(title content))
     if params[:type] == 'dict'
       @classifier.type = 'DictionaryClassifier'
     else
@@ -63,14 +63,20 @@ class ClassifiersController < ApplicationController
   
   def classify
     Resque.enqueue(StartBatchClassifier, [@classifier.id])
-    redirect_to classifiers_path, :notice => "Classification for #{@classifier.name} started. This may take a while."
+    redirect_to classifier_path(@classifier), :notice => "Classification for #{@classifier.name} started in the background."
   end
   
   def classify_all
     Resque.enqueue(StartBatchClassifier, @project.classifiers.auto.all.map(&:id))
-    redirect_to classifiers_path, :notice => "Classification for all classifiers started. This may take a long time."
+    redirect_to classifiers_path, :notice => "Classification for all classifiers started in the background."
   end
   
+  def reset
+    Resque.enqueue(ResetClassifier, @classifier.id)
+    redirect_to classifier_path(@classifier), :notice => "All classifications for #{@classifier.name} are being deleted in the background."
+  end
+  
+    
   private
   def merge_params
       params[:classifier] = params[:dictionary_classifier] unless params[:classifier]

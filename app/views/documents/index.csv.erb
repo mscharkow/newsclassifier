@@ -1,3 +1,6 @@
-<% @documents.each do |d|%>
-<%=d.id%> <%= d.url%> <%= d.links.join(' ') %>
+<%if params[:links]%>
+id url links
+	<% @documents.each do |d|%>
+		<%=d.id%> <%= d.url%> <%= d.links.join(' ') %>
+	<%end%>
 <%end%>

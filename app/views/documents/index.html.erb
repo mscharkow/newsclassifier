@@ -1,17 +1,24 @@
 <div class="btn-group pull-right">
-	<%= abutton_to 'Titles', {format:'txt',params:params},{icon:'download'}%>
-	<%= abutton_to 'Link list', {format:'csv',links:1},{icon:'download'}%>
-  <%= abutton_to 'Complete CSV', {format:'csv',params:params},{icon:'list-alt'}%>
+	<%= abutton_to 'Export CSV', {format:'csv',params:params},{icon:'list-alt'}%>
+<button class="btn dropdown-toggle" data-toggle="dropdown">
+  <span class="caret"></span>
+</button>
+<ul class="dropdown-menu">
+	<li><%= link_to 'Headlines', {format:'txt'}%></li>
+	<li><%= link_to 'Links', {format:'csv',links:1}%></li>
+</ul>
+
+  
 </div>
 <h2>Documents in the project</h2>
 
-<p class="welcome">The project contains  <%=pluralize(@project.documents.count, 'document')%>. <%= link_to 'Start coding!', document_path(@next)  if @next%>
+<p class="lead">The project contains  <%=pluralize(@project.documents.count, 'document')%>. <%= link_to 'Start coding!', document_path(@next)  if @next%>
 
 </p>
 
 
 
-<table class="table table-striped">
+<table class="table table-striped table-condensed">
  <thead>
     <th>Title</th>
     <th>Source</th>
@@ -20,7 +27,7 @@
   </thead>
 
 <% @documents.each do | document | %>
-  <tr class="<%=cycle('odd','even')%>">
+  <tr>
 	<td><%=link_to document.title, document, :title=>document.url%></td>
   <td><%= link_to short_source(document.source), document.source%>
 	<%= link_to ' (F) ', documents_path(:source=>document.source) %></td>
@@ -30,5 +37,5 @@
 <% end %>
 </table>
 
-<p><%= paginate @documents, :window=>10%></p>
+<p><%= paginate @documents, :window=>10, :theme => 'twitter-bootstrap'%></p>
 

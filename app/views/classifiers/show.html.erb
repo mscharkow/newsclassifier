@@ -1,29 +1,54 @@
-<h2>Classifier <strong><%= @classifier.name %></strong> (<%= cltype(@classifier)%>)</h2>
-<p class="welcome">
+<script class="code" type="text/javascript">
+	$(document).ready(function(){
+	var plot1 = $.plot($('#classifier_dashboard'),[{label:'positive',data:12},{label:'negative',data:88}],
+	{series: {pie: {show: true}}});
+});
+</script>
+
+<h2>Classifier: <strong><%= @classifier.name %></strong> (<%= cltype(@classifier)%>)</h2>
+
+<div class="btn-group pull-right">
+<%= abutton_to 'Edit', edit_classifier_path(@classifier),{:icon=>'edit'}%> 
+<%= abutton_to 'Reset', reset_classifier_path(@classifier), 
+{method:'get',:style=>'btn',icon:'fire'}%>
+<%= button_to 'Delete', classifier_path(@classifier), :method=>:delete,:class=>'btn btn-danger',:confirm=>'Are you sure?' %>
+</div>
+
+<p class="lead">
 <%= pluralize(@classifier.classifications.size,'document')  %>
-classified so far. 
-	<%= abutton_to 'Edit classifier', edit_classifier_path(@classifier), 'small magenta right'%> <%= abutton_to 'Classify all documents', classify_classifier_path(@classifier), 'small green right'%>
+classified into <strong><%= pluralize(@classifier.categories.size,'category')%></strong> so far. 
 </p>
 
 <h3>Description</h3>
-<p> <%=h @classifier.description.blank? ? 'No description available.' : @classifier.description %></p>
-<p>Relevant parts:
-<%= @classifier.parts.sort.join(', ')%>.</p>
+<p class="lead"> <%=h @classifier.description.blank? ? 'No description available.' : @classifier.description %><br/>
+Relevant parts:
+<strong><%= @classifier.parts.sort.join(' ').upcase%></strong>
+</p>
 
-<h3>Categories</h3>
-<p> <%= @classifier.name%> has <%= pluralize(@classifier.categories.size,'category')%>.</p>
-<table>
-	<thead><th>Category</th><th>Description</th><th class="currency">Documents</th><th class="currency">Percent</th><thead>
+<div class="btn-group pull-right">
+<%= abutton_to 'Start classification', classify_classifier_path(@classifier)%>
+</div>
+
+<h3>Categories </h3>
+<div class="row-fluid" style="margin-top:3em;">
+	<div class="span10">
+<table class="table table-striped table-condensed">
+<thead><th>Category</th><th>Description</th><th class="currency">Documents</th><th class="currency">Percent</th><thead>
 	<% @classifier.categories.each do | cat | %>
-		<tr class="<%= cycle('odd','even')%>">
-			<td><strong><%= cat.name %></strong></td>
+		<tr>
+			<td><%= cat.name %></td>
 			<td><%= cat.description%></td>
-			<td class="currency"><%= cat.documents.size%></td>
+			<td class="currency"><%= cat.classifications.size%></td>
 			<td class="currency"><%=cat.percent.round%></td>
 		</tr>
 		<%end%>
 </table>
-
+</div>
+<% if false%>
+<div id="classifier_dashboard" class="span2">
+</div>
+<%end%>
+</div>
 <h3>Reliability</h3>
 
 
@@ -40,7 +65,7 @@ classified so far.
 </div>
 
 <%else%>
-<p>No reliability data available. 
+<p>No reliability checks are available for Dictionary Classifiers. 
 <%= link_to("Run reliability test", @classifier) unless @classifier.type %>	
 </p>
 <%end%>

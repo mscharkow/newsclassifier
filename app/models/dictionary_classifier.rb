@@ -12,8 +12,8 @@ class DictionaryClassifier < Classifier
   
   def save_categories
     if self.categories.size < 2
-      categories.create!(:value=>'1',:name=>'True', :description=>'Matches string.')
-      categories.create!(:value=>'0',:name=>'False', :description=>'Does not match string.')
+      categories.create!(:value=>'1',:name=>'positive', :description=>'Document matches pattern.')
+      categories.create!(:value=>'0',:name=>'negative', :description=>'Document does not match pattern.')
     end 
   end
     
@@ -52,9 +52,6 @@ class DictionaryClassifier < Classifier
     cl_neg = (documents-results).map{|i| [i,neg.id,self.id]}
     Classification.import columns, cl_pos+cl_neg, :validate => false
 
-
-    #pos.documents << results
-    #neg.documents << documents-results
     Classifier.reset_counters self.id, :classifications
     Category.reset_counters pos.id, :classifications
     Category.reset_counters neg.id, :classifications

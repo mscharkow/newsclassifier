@@ -21,6 +21,7 @@ Nc3::Application.routes.draw do
   
   resources :classifiers do
     member {get 'classify'}
+    member {get 'reset'}
     collection {get 'classify_all'}
     collection {get 'codebook'}
   end

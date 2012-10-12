@@ -1,6 +1,50 @@
-<h2>Source <strong><%= @source.name%></strong></h2>
-<p class="welcome">This source has <%= pluralize @source.documents.size, 'document' %>.
-	
-		<%= button_to 'Reset (Delete documents)', reset_source_path(@source), :class=>'right small black delete'%>
-	<%= abutton_to 'Edit source', edit_source_path(@source), 'right small magenta'%>
-	</p>
+<script class="code" type="text/javascript">
+	$(document).ready(function(){
+	 $.getJSON('/documents.json?source=<%=@source.id%>', function(data){
+	  var plot1 = $.plot($('#source_dashboard'), [data], dashboard_opts);
+	});
+});
+</script>
+
+<h2>Source: <strong><%= @source.name%></strong></h2>
+
+<div class="btn-group pull-right">
+<%= abutton_to 'Edit', edit_source_path(@source),{:icon=>'edit'}%> 
+<%= abutton_to 'Reset', reset_source_path(@source), 
+{method:'get',:style=>'btn',icon:'fire'}%>
+<%= button_to 'Delete', source_url(@source), :method=>:delete,:class=>'btn btn-danger',:confirm=>'Are you sure?' %>
+</div>
+
+<p class="lead">
+<%= pluralize @source.documents.size, 'document' -%>
+<% if @source.documents.size > 1%>, published from
+<strong><%= time_ago_in_words(@source.documents.order(:pubdate).first.pubdate)%> ago</strong> until <strong><%= time_ago_in_words(@source.documents.order(:pubdate).last.pubdate)%> ago</strong><% end -%>.
+</p>
+
+<h3>Data collection</h3>
+	<%= abutton_to 'Update from feeds', import_source_path(@source),{:style=>'pull-right'}%>
+<p class="lead"> 
+	Number of feeds: 
+	<strong><%=@source.urls.size%> </strong>| 
+	Update automatically: 
+	<strong><%= yesno(@source.auto_update)%></strong> |
+	Fulltext from URL: 
+<strong>	<%= yesno(@source.metadata['fulltext_from_url'] == "1")%> </strong>
+<br/>
+	Print link substitution:
+	<code><%= @source.fetch_metadata(:print_regexp) || 'UNDEFINED' %></code>  |
+	Article filter rule:
+	<code><%= @source.fetch_metadata(:filter) || 'UNDEFINED' %> </code>
+</p>
+
+<p></p>
+
+<% if @source.documents.size > 0%>
+
+<h3>History</h3>
+<div id="source_dashboard" class="span12"></div>
+
+<h3>Statistics</h3>
+
+<%end%>
+

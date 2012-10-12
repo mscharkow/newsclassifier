@@ -8,10 +8,15 @@ class SourcesController < ApplicationController
     respond_to do |format|
       format.html# index.html.erb
       format.csv
+      format.json {render :json => @sources.to_json}
     end
   end
 
   def show
+    respond_to do |format|
+      format.html
+      format.json {render :json => @source.export}
+    end
   end
 
   def new
@@ -37,8 +42,8 @@ class SourcesController < ApplicationController
 
   def update
     if @source.update_attributes(params[:source])
-        flash[:notice] = "Source #{@source.name} was successfully updated."
-        redirect_to(sources_path)
+        flash[:info] = "Source #{@source.name} was successfully updated."
+        redirect_to @source
     else
       render :action => "edit"
     end
@@ -52,13 +57,13 @@ class SourcesController < ApplicationController
   def reset
     Resque.enqueue(ResetSource,@source.id)
     flash[:info] = "All documents from #{@source.name} are being deleted. This may take a minute."
-    redirect_to(sources_url)
+    redirect_to @source
   end
   
   def import 
     Resque.enqueue(FeedImport, @source.id)
     flash[:info] = "Import from #{@source.name} started. This may take a minute."
-    redirect_to(sources_url)
+    redirect_to @source
   end
   
   def import_all

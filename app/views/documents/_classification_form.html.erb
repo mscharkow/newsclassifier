@@ -1,8 +1,8 @@
-<%= form_for(@document) do |f|%>
-	<table>
-		<thead><th>Classifier</th><th>Category</th></thead>
+<%= simple_form_for(@document) do |f|%>
+<table class="table table-striped table-condensed">
+		<thead><th>Classifier</th><th class="right">Category</th></thead>
 	<%=	render :partial => 'classification', :collection=>@document.classifications.sort_by{|c|c.classifier.name} %>
 	</table>
-	<p class="submit"> <%= f.submit 'Save classifications'%> | <%= abutton_to 'Skip this document',document_path(@next), 'small' if @next %></p>
+	<p class="submit"> <%= f.submit 'Save classifications', :class=>'btn btn-small'%> | <%= abutton_to 'Skip this document',document_path(@next),{:style=>'btn-small'} if @next %></p>
 	
 <%end%>
