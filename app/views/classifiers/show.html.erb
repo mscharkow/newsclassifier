@@ -38,8 +38,8 @@ Relevant parts:
 		<tr>
 			<td><%= cat.name %></td>
 			<td><%= cat.description%></td>
-			<td class="currency"><%= cat.classifications.size%></td>
-			<td class="currency"><%=cat.percent.round%></td>
+			<td class="currency"><%= link_to cat.classifications.size ,documents_path(:category=>cat.id)%></td>
+			<td class="currency"><%= link_to cat.percent.round(1), documents_path(:category=>cat.id) %></td>
 		</tr>
 		<%end%>
 </table>
