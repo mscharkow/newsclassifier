@@ -19,7 +19,7 @@
 
 
 <% else %>
-	<%= f.input :regexp, :input_html=>{:class=>'span8',:rows=>10},:label=>'Pattern' %>
+	<%= f.input :regexp, :input_html=>{:class=>'span8',:rows=>10},:label=>'Pattern',:hint=>'Use either regular expressions or SQL matching. One pattern per row for Boolean OR.<br/> For SQL matching, put <b>%</b> in the first row and the search pattern below.' %>
 	<%= f.hidden_field :type %>
 	<% end %>	
 <p>
