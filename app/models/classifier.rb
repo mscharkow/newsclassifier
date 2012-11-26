@@ -37,10 +37,9 @@ class Classifier < ActiveRecord::Base
   def variable_name
     name.gsub(/\s+/,'_').downcase
   end
-  
-  
+    
   def manual_reliability
-    Reltest.new(self).manual
+    Reltest.new(self).manual rescue nil
   end
   
   def auto_reliability
