@@ -18,6 +18,7 @@ gem 'unicorn'
 gem 'vlad'
 gem 'vlad-git'
 gem 'vlad-extras'
+gem 'airbrake'
 
 group :test do
   gem 'minitest'        
@@ -51,3 +52,5 @@ gem 'htmlentities'
 gem 'nokogiri'
 gem 'feedzirra'
 gem 'textstats'
+
+gem 'stuff-classifier', :git=>'git://github.com/alexandru/stuff-classifier.git'
