@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120823095409) do
+ActiveRecord::Schema.define(:version => 20121122195439) do
 
   create_table "bodies", :force => true do |t|
     t.integer  "document_id"
@@ -62,6 +62,7 @@ ActiveRecord::Schema.define(:version => 20120823095409) do
     t.text     "parts"
     t.text     "reliability"
     t.integer  "classifications_count", :default => 0
+    t.integer  "teacher_id"
   end
 
   create_table "classifiers_users", :id => false, :force => true do |t|
