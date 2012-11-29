@@ -37,15 +37,7 @@ class Classifier < ActiveRecord::Base
   def variable_name
     name.gsub(/\s+/,'_').downcase
   end
-    
-  def manual_reliability
-    Reltest.new(self).manual rescue nil
-  end
-  
-  def auto_reliability
-    reliability[:auto][0] rescue nil
-  end
-  
+
   def relevant_content(document)
     parts.map{|p| document.send(p)}.join("\n")
   end
@@ -66,43 +58,49 @@ class Classifier < ActiveRecord::Base
   def all_classifications_for(document)
     classifications.find_all_by_document_id(document)
   end
-  
 
-  
-#---- Reliability
+# Reliability
   
   def difficult_documents
     documents.uniq.map{|d| d if self.all_classifications_for(d).map{|a|a.category_id}.uniq.size > 1}.compact
   end
   
+  def manual_reliability
+    Reltest.new(self).manual
+  end
+
+  def auto_reliability
+    reliability[:auto][0] rescue nil
+  end
+
+  def agreement(data)
+    (data.map{|i|i.uniq.size == 1 ? 1:0}.inject(:+).to_f/data.size).round(2)
+  end
+
 # Supervised Classification
 
+  def classify(document,permanent=false)
+    content = relevant_content(document)
+    @cl.classify(content)
+  end
 
-def classify(document,permanent=false)
-  content = relevant_content(document)
-  @cl.classify(content)
+  def train(classification)
+    content = relevant_content(classification.document)
+    @cl.train(classification.category.id,content)
+  end
+
+  def load_classifier
+    cats = categories.all.map(&:id)
+    @cl = RubyClassifier::Bayes.new(*cats)
+  end
+
+  def save_classifier
+    File.open(cl_path,'w'){|f|f.write(Marshal.dump(@cl))}
+  end  
+
+  def cl_path
+    "#{Rails.root}/data/classifier_#{id}"
 end
-
-def train(classification)
-  content = relevant_content(classification.document)
-  @cl.train(classification.category.id,content)
-end
-
-def load_classifier
-  cats = categories.all.map(&:id)
-  @cl = RubyClassifier::Bayes.new(*cats)
-end
-
-def save_classifier
-  File.open(cl_path,'w'){|f|f.write(Marshal.dump(@cl))}
-end  
-
-def cl_path
-  "#{Rails.root}/data/classifier_#{id}"
-end
-  
-  
-
 
 end
 
