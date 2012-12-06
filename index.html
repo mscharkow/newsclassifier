@@ -51,24 +51,19 @@
 <pre><code>$ bundle install --deployment
 $ vim config/database.yml
 $ vim config/config.yml
-$ rake db:create
+$ rake db:setup
 </code></pre>
 
 <h2>Getting started</h2>
 
-<p>You can manage multiple projects with NewsClassifier, each with its own users, sources, documents and categories. The easiest way to set up a project is by pre-seeding a demo project:</p>
+<p>You can manage multiple projects with NewsClassifier, each with its own users, sources, documents and categories. NewsClassifier comes with a demo project as a fallback option, but it is recommended to create a new project for production purposes.</p>
 
-<pre><code>$ rake db:seed
-</code></pre>
-
-<p>Then start the web server and resque via foreman:</p>
+<p>Start the web server and resque via foreman:</p>
 
 <pre><code>$ foreman start
 </code></pre>
 
-<p>After creating a project and starting the server, you can access it via a subdomain, i.e. http://localhost:5000. You might need to update your hosts file for local testing and setup your web server in production.</p>
-
-<p>You can login with the email supplied above and the password you received.</p>
+<p>After  starting the server, you can access it at http://localhost:5000. You might need to update your hosts file for local testing with multiple projects and setup your web server in production.</p>
 
 <h2>License</h2>
 
