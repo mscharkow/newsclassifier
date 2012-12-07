@@ -24,7 +24,9 @@ class ClassifiersController < ApplicationController
   end
 
   def edit
-    @classifier = @project.classifiers.find(params[:id]).becomes(Classifier)
+    @classifier = @project.classifiers.find(params[:id])
+    @classifier_type = @classifier.type
+    @classifier = @classifier.becomes(Classifier)
   end
 
   def create

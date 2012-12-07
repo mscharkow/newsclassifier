@@ -35,7 +35,7 @@ class Classifier < ActiveRecord::Base
   end
   
   def variable_name
-    name.gsub(/\s+/,'_').downcase
+    name.gsub(/\W+/,'_').downcase
   end
 
   def relevant_content(document)

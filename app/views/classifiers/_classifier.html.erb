@@ -1,29 +1,15 @@
 <tr>
-		<td class="toggle">
-		  <%= link_to classifier.name, classifier_path(classifier)%>
-			<%= abutton_to 'Edit', edit_classifier_path(classifier),{:style=>'btn-small'}%>
-		
-		</td>
-    			<td><%= cltype(classifier)  %></td>
-				<td>
-					<% if classifier.type.blank? and classifier.reliability %><br/>
-						Manual: <%= classifier.reliability[:manual][1][0..2].join(', ') rescue nil %>, 
-						Automatic:  <%=classifier.reliability[:auto][1][0..2].join(',  ') rescue nil %>
-					<%else%>
-					&dash;
-					<%end%>
-					</td>
-
-				<td><%= pluralize(classifier.categories.size,'category') %></td>
-				<td>
-
-	<% classifier.categories.each do | cat | -%>
-					<%= link_to "#{cat.name}: #{cat.classifications.size} (#{cat.percent.round(1)}%) ", documents_path(:category=>cat.id) %>
-				<% end %> 
-			</td>
-
-		<td><%= classifier.classifications.size %></td>
-		<td>
-		<%= abutton_to 'Classify documents', classify_classifier_url(classifier),{style:'btn-small'} unless classifier.type.blank?%></td>
-		
+	<td class="toggle">
+	<%= link_to classifier.name, classifier_path(classifier)%>
+	<%= abutton_to 'Edit', edit_classifier_path(classifier),{:style=>'btn-small'}%>
+	</td>
+    <td><%= classifier_type(classifier)  %></td>
+	<td><%= reliability_plot(classifier) rescue nil %></td>
+	<td><%= classifier.categories.size %></td>
+	<td><% classifier.categories.each do | cat | -%>
+		<%= link_to "#{cat.name.capitalize}:  #{cat.percent.round(1)}%", documents_path(:category=>cat.id) -%>
+		<% end %> 
+	</td>
+	<td><%= classifier.classifications.size %></td>
+	<td><%= abutton_to 'Classify documents', classify_classifier_url(classifier),{style:'btn-small'} unless classifier.type.blank?%></td>
 </tr>

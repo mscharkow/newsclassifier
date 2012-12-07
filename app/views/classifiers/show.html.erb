@@ -5,7 +5,7 @@
 });
 </script>
 
-<h2>Classifier: <strong><%= @classifier.name %></strong> (<%= cltype(@classifier)%>)</h2>
+<h2>Classifier: <strong><%= @classifier.name %></strong> (<%= classifier_type(@classifier)%>)</h2>
 
 <div class="btn-group pull-right">
 <%= abutton_to 'Edit', edit_classifier_path(@classifier),{:icon=>'edit'}%> 
@@ -36,7 +36,7 @@ Relevant parts:
 <thead><th>Category</th><th>Description</th><th class="currency">Documents</th><th class="currency">Percent</th><thead>
 	<% @classifier.categories.each do | cat | %>
 		<tr>
-			<td><%= cat.name %></td>
+			<td><%= cat.name.capitalize %></td>
 			<td><%= cat.description%></td>
 			<td class="currency"><%= link_to cat.classifications.size ,documents_path(:category=>cat.id)%></td>
 			<td class="currency"><%= link_to cat.percent.round(1), documents_path(:category=>cat.id) %></td>

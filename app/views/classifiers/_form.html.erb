@@ -1,9 +1,12 @@
 <%= simple_form_for @classifier do |f| %>
   <%= f.input :name %>
   <%= f.input :description, :input_html=>{:class=>'span8',:rows=>5}%>
-  <%= f.input :parts, :collection=>@classifier.default_parts, :as=>:check_boxes,:item_wrapper_class=>'inline'%>
+ 
+<% if @classifier_type != 'LearningClassifier'%> 
+<%= f.input :parts, :collection=>@classifier.default_parts, :as=>:check_boxes,:item_wrapper_class=>'inline'%>
+<% end %>
 
-<% if @classifier.type.blank?%>
+<% if @classifier_type == nil%>
 	<div id="categories">
 	<h3>Categories</h3>
 		<%= f.simple_fields_for :categories do |cat| %>
@@ -16,9 +19,9 @@
 	</div>
 	<h3>Coders</h3>
 	<%= f.association :users, :as => :check_boxes %>
+<% end %>
 
-
-<% else %>
+<% if @classifier_type == 'DictionaryClassifier' %>
 	<%= f.input :regexp, :input_html=>{:class=>'span8',:rows=>10},:label=>'Pattern',:hint=>'Use either regular expressions or SQL matching. One pattern per row for Boolean OR.<br/> For SQL matching, put <b>%</b> in the first row and the search pattern below.' %>
 	<%= f.hidden_field :type %>
 	<% end %>	
