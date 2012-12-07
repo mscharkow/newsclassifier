@@ -18,7 +18,7 @@
 		<% end %>
 	</div>
 	<h3>Coders</h3>
-	<%= f.association :users, :as => :check_boxes %>
+	<%= f.association :users, :as => :check_boxes, :label_method => :email %>
 <% end %>
 
 <% if @classifier_type == 'DictionaryClassifier' %>
