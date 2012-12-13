@@ -42,8 +42,8 @@ class LearningClassifier < Classifier
     
   def reliability_metrics
     tp, fn, fp, tn =  confusion_matrix(reliability).map{|i|i[1]}
-    precision = 1.0*tp/(tp+fp)
-    recall = 1.0*tp/(tp+fn)
+    precision = 1.0*tp/(tp+fp) rescue 0
+    recall = 1.0*tp/(tp+fn) rescue 0
     f = 2.0 * (precision*recall)/(precision+recall)
     {:precision=>precision.round(2), :recall=>recall.round(2), :f=>f.round(2)}
   end
