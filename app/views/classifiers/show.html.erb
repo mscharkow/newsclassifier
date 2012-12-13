@@ -69,13 +69,15 @@ Relevant parts:
 <%= abutton_to 'Run reliability test', test_classifier_path(@classifier), :class=>'btn pull-right'  %>
 </div>
 <p class="lead">Accuracy: <%=@classifier.reliability_score || 'None yet.'%> 
+
+<% if @classifier.reliability %>
 <% if @classifier.teacher_id %>
 Precision: <%=@classifier.reliability_metrics[:precision]%> 
 Recall: <%=@classifier.reliability_metrics[:recall]%> 
 F-Measure: <%=@classifier.reliability_metrics[:f]%>
 <%end%>
 </p>
-<% if @classifier.reliability %>
+
 <h4>Raw reliability data</h4>
 <pre><%=@classifier.confusion_matrix(@classifier.reliability)%></pre>
 <pre>

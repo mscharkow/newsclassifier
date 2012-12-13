@@ -79,7 +79,7 @@ class Classifier < ActiveRecord::Base
   end
 
   def confusion_matrix(data)
-    data.group_by{|b|b}.map{|k,v| [k,v.size]}.sort
+    data.group_by{|b|b}.map{|k,v| [k,v.size]}.sort if data
   end
 
   def agreement(data)
