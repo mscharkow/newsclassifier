@@ -10,16 +10,17 @@ class ClassifiersController < ApplicationController
   end
   
   def show
-    @manual = @classifier.manual_reliability
   end
 
   def new
     @classifier = @project.classifiers.build(:parts => %w(title content))
+    
     if params[:type] == 'dict'
       @classifier.type = 'DictionaryClassifier'
     else
       @classifier.users << current_user
     end
+    @classifier_type = @classifier.type
     2.times{@classifier.categories.build}
   end
 
@@ -57,10 +58,15 @@ class ClassifiersController < ApplicationController
   end
   
   # Extra actions
+  # Classifier instance methods
   
-  def codebook
-    @fullpage = true
-    @classifiers = @project.classifiers.find(:all)
+  def teach
+    redirect_to classifier_path( @classifier.learner || @classifier.create_learner ), :notice => "Learning classifier created for #{@classifier.name}."
+  end
+  
+  def test
+    Resque.enqueue(RunReliabilityTest, @classifier.id)
+    redirect_to classifier_path(@classifier), :notice => "Reliability test for #{@classifier.name} started in the background."
   end
   
   def classify
@@ -68,20 +74,27 @@ class ClassifiersController < ApplicationController
     redirect_to classifier_path(@classifier), :notice => "Classification for #{@classifier.name} started in the background."
   end
   
-  def classify_all
-    Resque.enqueue(StartBatchClassifier, @project.classifiers.auto.all.map(&:id))
-    redirect_to classifiers_path, :notice => "Classification for all classifiers started in the background."
-  end
-  
   def reset
     Resque.enqueue(ResetClassifier, @classifier.id)
     redirect_to classifier_path(@classifier), :notice => "All classifications for #{@classifier.name} are being deleted in the background."
   end
   
+  # Classifier class methods
+  
+  def classify_all
+    Resque.enqueue(StartBatchClassifier, @project.classifiers.auto.all.map(&:id))
+    redirect_to classifiers_path, :notice => "Classification for all classifiers started in the background."
+  end
+  
+  def codebook
+    @fullpage = true
+    @classifiers = @project.classifiers.find(:all)
+  end
+  
     
   private
   def merge_params
-      params[:classifier] = params[:dictionary_classifier] unless params[:classifier]
+      params[:classifier] = (params[:dictionary_classifier] || params[:learning_classifier]) unless params[:classifier]
   end
   
   def get_classifier

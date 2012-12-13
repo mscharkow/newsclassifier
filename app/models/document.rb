@@ -90,12 +90,30 @@ class Document < ActiveRecord::Base
     @fulltext ||= "#{title} #{content}".gsub(/<\/?[^>]*>/, "").strip
   end
   
+  def csv_row
+    "#{id};#{clean(title)} #{clean(content)}"
+  end
+  
+  def clean(text)
+    return if text.blank?
+    text = text.gsub('"','').gsub(/\s+/,' ').gsub(';',',').strip
+    "#{text}"
+  end
+  
   def stats
     {:words=>fulltext.words.size,:ari => fulltext.ari.to_i,:sentences => fulltext.sentences}
   end
   
   def links
-    Rails.cache.fetch(cache_key+'links'){LinkExtractor.new(url,raw_content).extract}
+    Rails.cache.fetch([cache_key, 'links']){LinkExtractor.new(url,raw_content).extract}
+  end
+  
+  def unique_links
+    Rails.cache.fetch([cache_key, 'unique_links']) do 
+      prev_links = source.documents.where(['id < ?',self]).limit(10).map(&:links)
+      next_links = source.documents.where(['id > ?',self]).limit(10).map(&:links)
+      links - [prev_links + next_links].flatten.uniq
+    end
   end
 
   # Sanitize, save and export

@@ -1,7 +1,7 @@
 div.container-fluid {max-width:1600px;margin:0 auto;}
 .navbar {font-size:120%;}
 
-td.toggle {width:40%;}
+td.toggle {width:30%;}
 td.toggle a.btn{display:none;}
 td.toggle:hover a.btn{display:inline;}
 
@@ -19,6 +19,9 @@ border: 1px solid #DDD;
 #classifier_dashboard{height:8em;margin:0}
 .sparkline{height:32px;width:16em;margin:0;}
 .right {width:50%;text-align:right;}
+.reli_plot {width:10em;margin:0;}
+.category_plot {width: 10em;}
 
+.article p {max-width:60em;}
 
 h1{font-size:30px;line-height:40px}h2{font-size:24px;line-height:40px}h3{font-size:18px;line-height:20px}h4{font-size:14px;line-height:20px}

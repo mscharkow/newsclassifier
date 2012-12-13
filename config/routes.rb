@@ -9,27 +9,27 @@ Nc3::Application.routes.draw do
       get "login", :to => "devise/sessions#new"
       get "logout", :to => "devise/sessions#destroy"
   end
-  
-  
+
   resources :samples do
     member {get 'activate'}
   end
   
   resources :users
-  #resource :session, :controller => 'session'
   resources :projects, :documents
   
   resources :classifiers do
-    member {get 'classify'}
-    member {get 'reset'}
-    collection {get 'classify_all'}
-    collection {get 'codebook'}
+    member { get 'classify' }
+    member { get 'reset' }
+    member { get 'teach' }
+    member { get 'test' }
+    collection { get 'classify_all' }
+    collection { get 'codebook' }
   end
   
   resources :sources do
-    member {get 'import' }
-    member {get 'reset'}
-    collection {get 'import_all'}
+    member { get 'import' }
+    member { get 'reset' }
+    collection { get 'import_all' }
   end
   
   

@@ -10,8 +10,6 @@
 	<td class="toggle">
 		<%=link_to short_source(source,30), source%>
 		<%= abutton_to 'Edit', edit_source_path(source),{style:'btn-small',icon:'edit'}%>
-
-		
 	</td>
 	<td><%=link_to source.documents.count, documents_path(:source=>source) %>
 		</td>

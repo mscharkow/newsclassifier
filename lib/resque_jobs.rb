@@ -47,6 +47,14 @@ end
 class ResetClassifier
   @queue = :classifiers
   def self.perform(classifier_id)
-    Classifier.find(classifier_id).classifications.destroy_all
+    Classifier.find(classifier_id).reset
   end
+end
+
+class RunReliabilityTest
+  @queue = :classifiers
+  def self.perform(classifier_id)
+    Classifier.find(classifier_id).set_reliability
+  end
+  
 end

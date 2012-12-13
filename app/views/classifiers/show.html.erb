@@ -49,25 +49,41 @@ Relevant parts:
 </div>
 <%end%>
 </div>
-<h3>Reliability</h3>
 
-
-<% if @classifier.type == nil && @manual%>
-<p>Reliability statistics are based on <%= @manual[:n] %> pairwise codings.</p>
-
-<p>Percent Agreement: <%= @manual[:percent] %><br/>Krippendorff's Alpha: <%= @manual[:kripp] %></p>
-
-<h4>Replication code for R</h4>
-<div id="manual_reli" class="rcode">
-	<pre>
-<%= @manual[:rcode].strip%>
-	</pre>
-</div>
-
-<%else%>
-<p>No reliability checks are available for Dictionary Classifiers. 
-<%= link_to("Run reliability test", @classifier) unless @classifier.type %>	
+<h3>Supervised learning</h3>
+<p>
+	<% if @classifier.teacher_id %>
+	Classifier is learning from <%= link_to @classifier.teacher.name, classifier_path(@classifier.teacher)%>.
+<% else%>
+	<% if @classifier.learner %>
+	Acts as teacher to the learning classifier <%= link_to @classifier.learner.name, classifier_path(@classifier.learner) %>.
+	<% else %>
+	<%= abutton_to 'Create learning classifier', teach_classifier_path(@classifier)  %>
+	<% end %>
+<% end %>
 </p>
+
+<h3>Reliability</h3>
+<% if @classifier.type != 'DictionaryClassifier'%>
+<div class="btn-group pull-right">
+<%= abutton_to 'Run reliability test', test_classifier_path(@classifier), :class=>'btn pull-right'  %>
+</div>
+<p class="lead">Accuracy: <%=@classifier.reliability_score || 'None yet.'%> 
+<% if @classifier.teacher_id %>
+Precision: <%=@classifier.reliability_metrics[:precision]%> 
+Recall: <%=@classifier.reliability_metrics[:recall]%> 
+F-Measure: <%=@classifier.reliability_metrics[:f]%>
+<%end%>
+</p>
+<% if @classifier.reliability %>
+<h4>Raw reliability data</h4>
+<pre><%=@classifier.confusion_matrix(@classifier.reliability)%></pre>
+<pre>
+<%= reli_rcode(@classifier)%>
+</pre>
+<%end%>
+<%else%>
+<p>No reliability checks are available for Dictionary Classifiers. </p>
 <%end%>
 
 

@@ -3,11 +3,7 @@ class Output
     @project = project
   end
   
-  def clean(text)
-    return if text.blank?
-    text = text.gsub('"','').gsub(/\s+/,' ').strip
-    "\"#{text}\""
-  end
+
   
   def hlink(document,suffix)
     link ="articles/#{document.gf_id}.#{suffix}"
@@ -27,15 +23,15 @@ class Output
   def to_csv(conditions=nil)
     classifiers = @project.classifiers
     classifier_list = classifiers.map(&:variable_name)
-    std = %w(id url title pubdate year month day dayofweek hour minute create_date source)
+    std = %w(id url title pubdate year month day dayofweek hour minute createdate source links ulinks)
     header = [std, classifier_list].flatten.join(';')
     out = []
     out << header+"\n"
     Document.by_project(@project).find_in_batches(:batch_size=>5000,:conditions=>conditions,:include=>[:source]) do | documents|
-      key = "#{documents.first.classifications.last.try(:cache_key)}#{documents.last.classifications.last.try(:cache_key)}" || Time.now.to_s
+      key = [classifier_list.join,documents.first, documents.last, documents.first.classifications.last,documents.last.classifications.last] || Time.now.to_s
       out << Rails.cache.fetch(key) do 
         ha = self.create_hash(classifiers,documents)
-        documents.map {|d| [d.id, clean(d.url), clean(d.title), d.pubdate.strftime('%Y-%m-%d-%H-%M;%Y;%m;%d;%a;%H;%M'), d.created_at.strftime('%Y-%m-%d-%H-%M'), clean(d.source.name), classifiers.map{|c| ha[ [c.id,d.id] ] rescue 'NA' }].flatten.join(';')}.join("\n")+"\n"
+        documents.map {|d| [d.id, d.clean(d.url), d.clean(d.title), d.pubdate.strftime('%Y-%m-%d-%H-%M;%Y;%m;%d;%a;%H;%M'), d.created_at.strftime('%Y-%m-%d-%H-%M'), d.clean(d.source.name), d.links.size, d.unique_links.size, classifiers.map{|c| ha[ [c.id,d.id] ] rescue 'NA' }].flatten.join(';')}.join("\n")+"\n"
       end
     end
     out.join

@@ -16,15 +16,15 @@ class DictionaryClassifier < Classifier
       categories.create!(:value=>'0',:name=>'negative', :description=>'Document does not match pattern.')
     end 
   end
-    
+  
+  
+  # FIXME REFACTOR  
   def classify(document,permanent=false)
     result = relevant_content(document).scan(reg)
     if result.size > 0
-      res = {:document=>document,
-             :category=>self.categories[0],:score=>result.size} #true
+      res = {:document=>document, :category=>self.categories[0], :score=>result.size} #true
     else
-      res = {:document=>document,
-             :category=>self.categories[1],:score=>0} # false
+      res = {:document=>document, :category=>self.categories[1], :score=>0} # false
     end
     if permanent
       if cl = document.classifications.select{|i|i.classifier_id==id}[0] 
@@ -40,21 +40,18 @@ class DictionaryClassifier < Classifier
   end
   
   def classify_batch(documents)
-    documents = documents.map(&:id).compact.uniq
-    Classification.delete_all({document_id:documents,classifier_id:id})
+    documents = documents.map(&:id).uniq.compact
+    Classification.delete_all( {:document_id=>documents, :classifier_id=>id} )
     
     results = get_matching_documents(documents)
-    puts documents.size, results.size, (documents-results).size
     pos, neg = categories
     
-    columns = [:document_id,:category_id,:classifier_id]
-    cl_pos = results.map{|i| [i,pos.id,self.id]}
-    cl_neg = (documents-results).map{|i| [i,neg.id,self.id]}
-    Classification.import columns, cl_pos+cl_neg, :validate => false
+    columns = [:document_id, :category_id, :classifier_id]
+    cl_pos = results.map{|i| [i, pos.id, id]}
+    cl_neg = (documents - results).map{|i| [i, neg.id, id]}
+    Classification.import columns, cl_pos + cl_neg, :validate => false
 
-    Classifier.reset_counters self.id, :classifications
-    Category.reset_counters pos.id, :classifications
-    Category.reset_counters neg.id, :classifications
+    reset_all_counters
   end
   
   def terms_for(document)
@@ -62,7 +59,12 @@ class DictionaryClassifier < Classifier
   end
   
   def classify_all
-    project.documents.find_each{|d|self.classify(d)}
+    project.documents.find_in_batches(:batch_size=>5000, :select=>:id){|batch| classify_batch(batch) }
+  end
+  
+  def reset
+     Classification.delete_all( {:classifier_id=>id} )
+     reset_all_counters
   end
   
   private
@@ -87,5 +89,10 @@ class DictionaryClassifier < Classifier
     results.flatten.compact.uniq
   end
   
+  
+  def reset_all_counters
+    Classifier.reset_counters id, :classifications
+    categories.find_each{ |cat| Category.reset_counters cat.id, :classifications }
+  end
   
 end

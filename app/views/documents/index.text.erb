@@ -1,6 +1,5 @@
 <%if params[:links]%>
-id url links
 <% @documents.each do |d|%>
-<%=d.id%> <%= d.url%> <%= d.links.join(' ')%>
+<%= d.unique_links.map{|l| [d.source_id, d.url,l].join("\t")}.join("\n") if d.unique_links -%>
 <%end%>
 <%end%>

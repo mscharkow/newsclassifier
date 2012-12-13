@@ -13,6 +13,8 @@ class Classifier < ActiveRecord::Base
   has_many :documents, :through => :classifications
   has_and_belongs_to_many :users
   
+  has_one :learner, :class_name=>'LearningClassifier', :foreign_key => 'teacher_id'
+  
   serialize :parts
   serialize :reliability
 
@@ -24,24 +26,27 @@ class Classifier < ActiveRecord::Base
   validates_presence_of :parts, :message => "can't be blank"
   validates_uniqueness_of :name, :scope=>:project_id
 
+  def variable_name
+    name.gsub(/\W+/,'_').downcase
+  end
+  
+  # Parts definitions and methods
   before_save :cleanup_parts
   
-  def cleanup_parts
-    self.parts = parts.map{|p|p if default_parts.include?(p)}.compact.uniq
-  end
-    
   def default_parts
      %w(title summary content raw_content url)
   end
   
-  def variable_name
-    name.gsub(/\W+/,'_').downcase
+  def cleanup_parts
+    self.parts = parts.map{|p|p if default_parts.include?(p)}.compact.uniq
   end
 
   def relevant_content(document)
-    parts.map{|p| document.send(p)}.join("\n")
+    Rails.cache.fetch([document.cache_key, self.parts]) { parts.map{|p| document.send(p)}.join("\n") }
   end
   
+  
+  # Select from multiple classifications (FIXME after LearningClassifier transition)
   def get_classification_for(document)
     cl = classifications.manual.find_all_by_document_id(document).sort_by{rand}[0] || classifications.auto.find_all_by_document_id(document).sort_by{rand}[0] 
     if cl.blank? 
@@ -65,42 +70,21 @@ class Classifier < ActiveRecord::Base
     documents.uniq.map{|d| d if self.all_classifications_for(d).map{|a|a.category_id}.uniq.size > 1}.compact
   end
   
-  def manual_reliability
-    Reltest.new(self).manual
+  def reliability_score
+    agreement(reliability) if reliability && reliability.size > 20
+  end
+  
+  def set_reliability
+    false
   end
 
-  def auto_reliability
-    reliability[:auto][0] rescue nil
+  def confusion_matrix(data)
+    data.group_by{|b|b}.map{|k,v| [k,v.size]}.sort
   end
 
   def agreement(data)
     (data.map{|i|i.uniq.size == 1 ? 1:0}.inject(:+).to_f/data.size).round(2)
   end
-
-# Supervised Classification
-
-  def classify(document,permanent=false)
-    content = relevant_content(document)
-    @cl.classify(content)
-  end
-
-  def train(classification)
-    content = relevant_content(classification.document)
-    @cl.train(classification.category.id,content)
-  end
-
-  def load_classifier
-    cats = categories.all.map(&:id)
-    @cl = RubyClassifier::Bayes.new(*cats)
-  end
-
-  def save_classifier
-    File.open(cl_path,'w'){|f|f.write(Marshal.dump(@cl))}
-  end  
-
-  def cl_path
-    "#{Rails.root}/data/classifier_#{id}"
-end
 
 end
 

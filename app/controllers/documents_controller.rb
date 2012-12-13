@@ -40,7 +40,7 @@ class DocumentsController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.csv  {render :text=>@project.csv}
-      format.text {render :text => @documents.map(&:title).join("\n")  unless params[:links]}
+      format.text {render :text => @documents.map(&:csv_row).join("\n")  unless params[:links]}
       format.json {render :json => @documents}
     end
   end
