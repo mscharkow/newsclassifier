@@ -7,3 +7,4 @@ config/database.yml
 config/config.yml
 config/unicorn.rb
 bundler_stubs/
+data/*

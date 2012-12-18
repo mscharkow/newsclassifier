@@ -1,7 +1,7 @@
 <div class="grid_12">
 <h2>Codebook for project <strong><%=@project.name%></strong></h2>
 <% @classifiers.each do | c | %>
-<h3> <%=h c.name%> (<%= cltype(c)%>)</h3>
+<h3> <%=h c.name%> (<%= classifier_type(c)%>)</h3>
 
 <p class="description"><%=h c.description.blank? ? 'No description available.' : c.description %>.</p>
 <p>Relevant parts: <%= c.parts.sort.join(', ')%></p>
