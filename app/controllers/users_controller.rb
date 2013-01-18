@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_filter :is_admin?, :only=>[:new, :create, :destroy]
+  before_filter :check_admin, :only=>[:new, :create, :destroy]
   before_filter :get_user, :except=>[:new, :index]
   
   def index

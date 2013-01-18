@@ -1,10 +1,8 @@
 class DocumentsController < ApplicationController
   before_filter :get_document, :except=>[:index,:new, :create]
   before_filter :next_document, :only=>[:show,:index]
-  skip_before_filter :is_admin?
-  
-  #caches_action :index, :cache_path => Proc.new {|c| c.request.url }
-
+  skip_before_filter :check_admin
+  skip_before_filter :authenticate_user!, :only=>[:index]
   
   def show
     @classifiers = current_user.classifiers.manual.find_all_by_project_id(@project, :include=>:categories)
@@ -39,8 +37,8 @@ class DocumentsController < ApplicationController
     
     respond_to do |format|
       format.html # index.html.erb
-      format.csv  {render :text=>@project.csv}
-      format.text {render :text => @documents.map(&:csv_row).join("\n")  unless params[:links]}
+      format.csv  {headers["Content-Type"] = "text/csv" and self.response_body = @project.csv}
+      format.text {headers["Content-Type"] = "text/csv" and self.response_body = @documents.map(&:to_csv) }
       format.json {render :json => @documents}
     end
   end

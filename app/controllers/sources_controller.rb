@@ -1,6 +1,7 @@
 class SourcesController < ApplicationController
   before_filter :get_sources, :only=>[:index, :show, :new, :edit]
   before_filter :get_source, :except=>[:index,:new,:create,:import_all]
+  before_filter :check_admin
   
   def index
     @fullpage = true

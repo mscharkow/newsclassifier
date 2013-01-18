@@ -1,8 +1,8 @@
 class ProjectsController < ApplicationController
   skip_before_filter :get_project, :only => [:new, :destroy, :create]
-  http_basic_authenticate_with :name => APP_CONFIG['username'], :password => APP_CONFIG['password'], :except=>:show
-  
+  http_basic_authenticate_with :name => APP_CONFIG['username'], :password => APP_CONFIG['password'], :except=>:show  
   before_filter :get_stats, :only =>[:show]
+  before_filter :check_admin
 
   def index
     @projects = Project.all

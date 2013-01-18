@@ -1,9 +1,10 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
   helper :all # include all helpers, all the time
+  helper_method :is_admin?
   before_filter :get_project
   before_filter :authenticate_user!
-  helper_method :is_admin?
+
 
   protected
   def get_project
@@ -15,6 +16,13 @@ class ApplicationController < ActionController::Base
   end
 
   def is_admin?
-   current_user && current_user.admin?
+    current_user && current_user.admin
   end
+  
+  def check_admin
+    unless is_admin?
+      redirect_to '/documents', :error => "You don't have permissions for this action."
+      false
+    end
+  end   
 end
