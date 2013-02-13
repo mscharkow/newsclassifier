@@ -1,5 +1,7 @@
+<% @documents.find_each(:batch_size=>1000) do |d|%>
 <%if params[:links]%>
-<% @documents.each do |d|%>
 <%= d.unique_links.map{|l| [d.source_id, d.url,l].join("\t")}.join("\n") if d.unique_links -%>
+<%else%>
+<%= d.to_csv%>
 <%end%>
 <%end%>
