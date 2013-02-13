@@ -43,12 +43,11 @@ class Source < ActiveRecord::Base
   end
 
   
-  def export
-    to_json(:include=>{
-              :documents=>{:include=>
-                          {:body=>{:except=>[:document_id,:created_at,:updated_at,:id]}
-                          },:except => [ :id, :source_id,:classifications_count,:updated_at]}
-            },:except => [ :id,:documents_count,:project_id,:updated_at ])
+  def as_json(options={})
+    super :only => [:name, :urls, :metadata], 
+            :include => { :documents => { :only=>[:title, :url, :pubdate], 
+              :include=> { :body => { :only => [:summary, :content, :raw_content] }}
+              }}
   end
   
   
