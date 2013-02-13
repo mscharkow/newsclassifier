@@ -4,7 +4,9 @@ class Body < ActiveRecord::Base
   before_save :clean_content
 
   def set_content
-     self.content = extract_text(raw_content) if content.blank? && raw_content
+    if content.blank? && raw_content?
+      self.content = extract_text(raw_content) 
+    end
   end
   
   def clean_content
@@ -17,13 +19,15 @@ class Body < ActiveRecord::Base
   def extract_text(text=raw_content)
     return '' if text.blank?
     html = Nokogiri::HTML(text)
-    %w(script style form .comments).each{|i|html.search(i).remove}
-    element = document.source.metadata[:filter]
-    unless element.nil?
-     filtered = html.at(element).inner_html rescue nil
+    %w(script style form .comments meta).each{|i| html.search(i).remove}
+        
+    if element = document.source.metadata[:filter]
+     filtered = html.at(element) rescue nil
     end
-    content = filtered || html
-    bte = IO.popen('./bin/bte','w+')
+    
+    content = (filtered || html).inner_html
+    
+    bte = IO.popen("#{Rails.root}/plugins/filters/bte",'w+')
     bte.write(content)
     bte.close_write
     c = bte.read
