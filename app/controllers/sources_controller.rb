@@ -9,14 +9,14 @@ class SourcesController < ApplicationController
     respond_to do |format|
       format.html# index.html.erb
       format.csv
-      format.json {render :json => @sources.to_json}
+      format.json {render :json => @sources}
     end
   end
 
   def show
     respond_to do |format|
       format.html
-      format.json {render :json => @source.export}
+      format.json {render :json => @source}
     end
   end
 
