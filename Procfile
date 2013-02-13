@@ -1,2 +1,2 @@
-web: unicorn -p 5000
+web: unicorn -c config/unicorn.rb
 worker: rake environment resque:work QUEUE=*
