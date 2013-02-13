@@ -64,7 +64,7 @@ Relevant parts:
 </p>
 
 <h3>Reliability</h3>
-<% if @classifier.type != 'DictionaryClassifier'%>
+<% if not ['DictionaryClassifier', 'ExternalClassifier'].include? @classifier.type%>
 <div class="btn-group pull-right">
 <%= abutton_to 'Run reliability test', test_classifier_path(@classifier), :class=>'btn pull-right'  %>
 </div>
@@ -85,7 +85,7 @@ F-Measure: <%=@classifier.reliability_metrics[:f]%>
 </pre>
 <%end%>
 <%else%>
-<p>No reliability checks are available for Dictionary Classifiers. </p>
+<p>No reliability checks are available for Dictionary and External Classifiers. </p>
 <%end%>
 
 

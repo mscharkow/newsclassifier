@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130120190558) do
+ActiveRecord::Schema.define(:version => 20130213201520) do
 
   create_table "bodies", :force => true do |t|
     t.integer  "document_id"
@@ -40,7 +40,7 @@ ActiveRecord::Schema.define(:version => 20130120190558) do
     t.integer  "document_id"
     t.integer  "category_id"
     t.integer  "user_id"
-    t.float    "score"
+    t.text     "score"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "classifier_id"

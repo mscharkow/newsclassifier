@@ -17,6 +17,8 @@ class ClassifiersController < ApplicationController
     
     if params[:type] == 'dict'
       @classifier.type = 'DictionaryClassifier'
+    elsif params[:type] == 'ext'
+      @classifier.type = 'ExternalClassifier'
     else
       @classifier.users << current_user
     end
@@ -33,6 +35,8 @@ class ClassifiersController < ApplicationController
   def create
     if params[:classifier][:type] == 'DictionaryClassifier'
       @classifier = DictionaryClassifier.new(params[:classifier])
+    elsif params[:classifier][:type] == 'ExternalClassifier'
+      @classifier = ExternalClassifier.new(params[:classifier])
     else
       @classifier = @project.classifiers.new(params[:classifier])
     end
@@ -94,7 +98,7 @@ class ClassifiersController < ApplicationController
     
   private
   def merge_params
-      params[:classifier] = (params[:dictionary_classifier] || params[:learning_classifier]) unless params[:classifier]
+      params[:classifier] = (params[:dictionary_classifier] || params[:learning_classifier] || params[:external_classifier]) unless params[:classifier]
   end
   
   def get_classifier

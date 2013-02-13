@@ -19,7 +19,7 @@ class Classifier < ActiveRecord::Base
   serialize :reliability
 
   scope :manual, where(:type=>nil)
-  scope :auto, where(:type=>'DictionaryClassifier')
+  scope :auto, where('type != ""')
     
   validates_presence_of :project_id, :message => "must be set."
   validates_presence_of :name, :message => "can't be blank"
@@ -42,7 +42,13 @@ class Classifier < ActiveRecord::Base
   end
 
   def relevant_content(document)
+    return '' unless document
     Rails.cache.fetch([document.cache_key, self.parts]) { parts.map{|p| document.send(p)}.join("\n") }
+  end
+  
+  def reset_all_counters
+    Classifier.reset_counters id, :classifications
+    categories.find_each{ |cat| Category.reset_counters cat.id, :classifications }
   end
   
   
@@ -75,7 +81,8 @@ class Classifier < ActiveRecord::Base
   end
   
   def set_reliability
-    false
+    all = classifications.group(:document_id).size.select { |k,v| k if v > 1 }.keys
+    update_attributes(:reliability => all.map { |doc_id| users.map{ |u| classifications.where({:document_id=>doc_id,:user_id=>u.id}).first.category_id rescue nil} })
   end
 
   def confusion_matrix(data)
@@ -83,8 +90,10 @@ class Classifier < ActiveRecord::Base
   end
 
   def agreement(data)
-    (data.map{|i|i.uniq.size == 1 ? 1:0}.inject(:+).to_f/data.size).round(2)
+    (data.map{|i|i.compact.uniq.size == 1 ? 1:0}.inject(:+).to_f/data.size).round(2)
   end
+
+
 
 end
 

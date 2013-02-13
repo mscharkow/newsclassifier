@@ -23,8 +23,14 @@
 
 <% if @classifier_type == 'DictionaryClassifier' %>
 	<%= f.input :regexp, :input_html=>{:class=>'span8',:rows=>10},:label=>'Pattern',:hint=>'Use either regular expressions or SQL matching. One pattern per row for Boolean OR.<br/> For SQL matching, put <b>%</b> in the first row and the search pattern below.' %>
-	<%= f.hidden_field :type %>
-	<% end %>	
+	<% end %>
+
+<% if @classifier_type == 'ExternalClassifier' %>
+	<%= f.input :regexp, :label=>'Plugin', collection: ExternalClassifier.new.plugin_list %>
+<% end %>
+
+<%= f.hidden_field :type %>
+
 <p>
 <%= f.submit "Save", :class=>'btn btn-success' %> 
 <%= abutton_to 'Back', @classifier unless @classifier.new_record?%> 

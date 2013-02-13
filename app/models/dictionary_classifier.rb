@@ -1,5 +1,5 @@
 class DictionaryClassifier < Classifier
-  validates_presence_of :regexp
+  validates_presence_of :regexp, :unless => Proc.new {|r| r.is_a? ExternalClassifier}
   after_save :save_categories
   
   def reg
@@ -19,24 +19,8 @@ class DictionaryClassifier < Classifier
   
   
   # FIXME REFACTOR  
-  def classify(document,permanent=false)
-    result = relevant_content(document).scan(reg)
-    if result.size > 0
-      res = {:document=>document, :category=>self.categories[0], :score=>result.size} #true
-    else
-      res = {:document=>document, :category=>self.categories[1], :score=>0} # false
-    end
-    if permanent
-      if cl = document.classifications.select{|i|i.classifier_id==id}[0] 
-        cl.update_attributes(res) if cl.score != res[:score]
-      else
-         cl = Classification.find_or_create_by_document_id_and_classifier_id(document.id,id)
-         cl.update_attributes(res)
-      end
-    else
-      cl = classifications.build(res)
-    end
-    cl
+  def classify(document)
+    classify_batch [document] and classifications.find_by_document_id(document.id).category
   end
   
   def classify_batch(documents)
@@ -88,11 +72,4 @@ class DictionaryClassifier < Classifier
     end
     results.flatten.compact.uniq
   end
-  
-  
-  def reset_all_counters
-    Classifier.reset_counters id, :classifications
-    categories.find_each{ |cat| Category.reset_counters cat.id, :classifications }
-  end
-  
 end

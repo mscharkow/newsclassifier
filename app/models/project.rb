@@ -71,6 +71,10 @@ class Project < ActiveRecord::Base
     classifiers.each{|cl|cl.send_later(:classify_all)}
   end
   
+  def as_json(options={})
+    super(:only=>[:announcements,:metadata,:permalink],:include =>[:sources, :classifiers])
+  end
+  
 #  private
   
   def csv_cache_key

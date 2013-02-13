@@ -30,7 +30,7 @@ class Classification < ActiveRecord::Base
   end
   
   def code
-    category.val
+    score || category.val
   end
   
 end

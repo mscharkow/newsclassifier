@@ -2,9 +2,7 @@ class Output
   def initialize(project)
     @project = project
   end
-  
-
-  
+    
   def hlink(document,suffix)
     link ="articles/#{document.gf_id}.#{suffix}"
     "=HYPERLINK(\"#{link}\")"
@@ -26,7 +24,7 @@ class Output
     std = %w(id url title pubdate year month day dayofweek hour minute createdate source links ulinks)
     header = [std, classifier_list].flatten.join(';')
     out = []
-    out << header+"\n"
+    out << header
     Document.by_project(@project).find_in_batches(:batch_size=>5000,:conditions=>conditions,:include=>[:source]) do | documents|
       key = [classifier_list.join,documents.first, documents.last, documents.first.classifications.last,documents.last.classifications.last] || Time.now.to_s
       out << Rails.cache.fetch(key) do 
@@ -34,7 +32,7 @@ class Output
         documents.map {|d| [d.id, d.clean(d.url), d.clean(d.title), d.pubdate.strftime('%Y-%m-%d-%H-%M;%Y;%m;%d;%a;%H;%M'), d.created_at.strftime('%Y-%m-%d-%H-%M'), d.clean(d.source.name), d.links.size, d.unique_links.size, classifiers.map{|c| ha[ [c.id,d.id] ] rescue 'NA' }].flatten.join(';')}.join("\n")+"\n"
       end
     end
-    out.join
+    out.join("\n")
   end
   
 end

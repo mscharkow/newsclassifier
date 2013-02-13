@@ -25,7 +25,7 @@ class DocumentDownload
   @queue = :documents
   def self.perform(document_id)
     doc = Document.find(document_id)
-    doc.get_url_content and doc.get_classifications(true)    
+    doc.get_url_content   
   end
 end
 
