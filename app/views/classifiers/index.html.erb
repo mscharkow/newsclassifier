@@ -5,7 +5,7 @@
 <h2>Classifiers in the project</h2>
 
 <p class="lead">
-The project contains <%= pluralize(@classifiers.size,'classifier')%> &mdash; <%= pluralize(@project.classifiers.manual.size, 'manual classifier') %> and <%= pluralize(@project.classifiers.auto.size, 'automatic classifier')%>.<br/> <%= link_to 'Add a new manual classifier', new_classifier_path %> or a <%= link_to 'new automatic classifier', new_classifier_path(:type=>'dict') %>. </p>
+	The project contains <%= pluralize(@classifiers.size,'classifier')%> &mdash; <%= pluralize(@project.classifiers.manual.size, 'manual classifier') %> and <%= pluralize(@project.classifiers.auto.size, 'automatic classifier')%>.<br/> <%= link_to 'Add a new manual classifier', new_classifier_path %>, a <%= link_to 'new dictionary classifier', new_classifier_path(:type=>'dict') %> or a <%= link_to 'new external classifier', new_classifier_path(:type=>'ext') %>.</p>
 
 <table class="table table-striped">
 <thead> <th>Name</th><th>Type</th><th>Reliability</th><th>Categories</th><th>Details</th><th>Classifications</th><th></th><th></th> </thead>
