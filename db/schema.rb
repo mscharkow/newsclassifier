@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121122195439) do
+ActiveRecord::Schema.define(:version => 20130120190558) do
 
   create_table "bodies", :force => true do |t|
     t.integer  "document_id"
@@ -77,16 +77,15 @@ ActiveRecord::Schema.define(:version => 20121122195439) do
     t.datetime "pubdate"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "title"
+    t.text     "title"
     t.integer  "position"
-    t.string   "url"
+    t.text     "url"
     t.integer  "classifications_count", :default => 0
   end
 
   add_index "documents", ["pubdate", "source_id"], :name => "index_documents_on_pubdate_and_source_id"
   add_index "documents", ["source_id", "pubdate"], :name => "index_documents_on_source_id_and_pubdate"
   add_index "documents", ["source_id"], :name => "index_documents_on_source_id"
-  add_index "documents", ["url"], :name => "index_documents_on_url"
 
   create_table "projects", :force => true do |t|
     t.string   "name"
