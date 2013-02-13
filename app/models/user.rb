@@ -12,16 +12,15 @@ class User < ActiveRecord::Base
   has_many :classifications
   has_and_belongs_to_many :classifiers, :uniq => true
   
-  def fellows
-    classifiers.map{|c|c.users.where(['id NOT ?',id])}.flatten.uniq
-  end
-  
   validates_presence_of :email 
   validates_presence_of :password
-
+  
+  def fellows
+    classifiers.map{ |c| c.users.where(['id NOT ?',id]) }.flatten.uniq
+  end
+  
   #TODO - Coding statistics by day of week, hour of day, etc.
   def stats
     classifications.size
   end
-    
 end
