@@ -1,159 +1,162 @@
 <script class="code" type="text/javascript">
-	$(document).ready(function(){
-	 $.getJSON('/documents.json', function(data){
-	  var plot1 = $.plot($('#chart1'), [data], dashboard_opts);
-	});
+  $(document).ready(function(){
+   $.getJSON('/documents.json', function(data){
+    var plot1 = $.plot($('#chart1'), [data], dashboard_opts);
+  });
 });
 </script>
 <div class="row-fluid">
-	<div class="span8">
-		<h1 id="page-heading">Project <%= @project.name %>.</h1>
+  <div class="span8">
+    <h1 id="page-heading">Project <%= @project.name %>.</h1>
 
-		<p class="lead"> It currently contains <%= link_to pluralize(@project.documents.count, 'document'), documents_path%> from <%= link_to pluralize(@project.sources.count, 'source'), sources_path%> and <%= link_to pluralize(@project.samples.count, 'sample'), samples_path%>.
-	<br/>
-	The codebook contains <%= link_to pluralize(@project.classifiers.manual.count, 'manual classifier'), classifiers_path%> and another <%= link_to pluralize(@project.classifiers.auto.count, 'automatic classifier'), classifiers_path%>.
-	<br/>
-	<%= link_to pluralize(@project.users.count, 'coder'), users_path%> created <a href="#"><%= pluralize(@project.classifications.manual.size,'classification')%></a> until now.
-	</p>
-	<hr/>
+    <p class="lead"> It currently contains <%= link_to pluralize(@project.documents.count, 'document'), documents_path%> from <%= link_to pluralize(@project.sources.count, 'source'), sources_path%> and <%= link_to pluralize(@project.samples.count, 'sample'), samples_path%>.
+  <br/>
+  The codebook contains <%= link_to pluralize(@project.classifiers.manual.count, 'manual classifier'), classifiers_path%> and another <%= link_to pluralize(@project.classifiers.auto.count, 'automatic classifier'), classifiers_path%>.
+  <br/>
+  <%= link_to pluralize(@project.users.count, 'coder'), users_path%> created <a href="#"><%= pluralize(@project.classifications.manual.size,'classification')%></a> until now.
+  </p>
+  <hr/>
 </div>
 
 <div class="span4">
-	<h3>About the Project</h3>
-	<%if @project.announcements%>
-		<p><%= @project.announcements%>
-	<%else%>
-		<p>There are no news for this project.</p>
-	<%end%>
-	<p><%= abutton_to('Edit project',edit_project_path(@project),{:class=>'btn-small',:icon=>'edit'}) if is_admin?%></p>
-	</div>
+  <h3>About the Project</h3>
+  <%if @project.announcements%>
+    <p><%= @project.announcements%>
+  <%else%>
+    <p>There are no news for this project.</p>
+  <%end%>
+  <p><%= abutton_to('Edit project',edit_project_path(@project),{:class=>'btn-small',:icon=>'edit'}) if is_admin?%></p>
+  </div>
 </div>
 
 <div class="row-fluid">
-	<div class="span4">
-		<h3>Documents</h3>
-			<div id="chart1"></div>
-			<p><%= abutton_to 'View the latest documents', documents_path%>
-				<%= abutton_to 'Download CSV', {:controller=>'documents',:format=>'csv',:params=>params}%></p>
-		</div>
+  <div class="span4">
+    <h3>Documents</h3>
+      <div id="chart1"></div>
+      <p><%= abutton_to 'View the latest documents', documents_path%>
+        <%= abutton_to 'Download CSV', {:controller=>'documents',:format=>'csv',:params=>params}%></p>
+    </div>
 
 
-		<div class="span4">
-			<h3>Sources</h3>
-				<p> The project covers <%=pluralize(@project.sources.size, 'source')%>.</p>
-			<table class="table table-condensed">
-				<% if stat = @stats[:most_active_source]%>
-				<tr><th>Most active</th>
-					<td><%= short_source(stat,12) %></td> 
-					<td class="currency"><%= pluralize(stat.documents.size,'document')%></td>
-					<td class="currency"><%= time_ago_in_words(stat.last_pubdate)+' ago' rescue nil%></td>
-				</tr> 
-				<%end%>
-				
-				<% if stat = @stats[:least_active_source]%>
-				<tr>
-					<th>Least active</th> 
-					<td><%= short_source(stat,12) %></td> 
-					<td class="currency"><%= pluralize(stat.documents.size,'document')%></td>
-					<td class="currency"><%= time_ago_in_words(stat.last_pubdate)+' ago' rescue nil%></td>
-				</tr> 
-				<%end%>
+    <div class="span4">
+      <h3>Sources</h3>
+        <p> The project covers <%=pluralize(@project.sources.size, 'source')%>.</p>
+      <table class="table table-condensed">
+        <% if stat = @stats[:most_active_source]%>
+        <tr><th>Most active</th>
+          <td><%= short_source(stat,12) %></td> 
+          <td class="currency"><%= pluralize(stat.documents.size,'document')%></td>
+          <td class="currency"><%= time_ago_in_words(stat.last_pubdate)+' ago' rescue nil%></td>
+        </tr> 
+        <%end%>
+        
+        <% if stat = @stats[:least_active_source]%>
+        <tr>
+          <th>Least active</th> 
+          <td><%= short_source(stat,12) %></td> 
+          <td class="currency"><%= pluralize(stat.documents.size,'document')%></td>
+          <td class="currency"><%= time_ago_in_words(stat.last_pubdate)+' ago' rescue nil%></td>
+        </tr> 
+        <%end%>
 
-			</table>
-			<p><%= abutton_to 'View sources', sources_path %> <%= abutton_to 'Add new source', new_source_path%></p>
-		</div>
-		
-		<div class="span4">
-			<h3>Samples</h3>
-			<%if @project.samples.count == 0 %>
-			<p> No samples have been drawn yet.</p>
-			<p><%= abutton_to 'Draw new sample', new_sample_path%></p>
-			<%else%>
-			<p> <%=pluralize(@project.samples.count, 'sample')%> in the project.</p> 
-			
-				<%if act = @project.samples.active.first %>
-					<p> Currently active sample is <%= act %></p>
-					<%end%>
+      </table>
+      <p><%= abutton_to 'View sources', sources_path %> <%= abutton_to 'Add new source', new_source_path%></p>
+    </div>
+    
+    <div class="span4">
+      <h3>Samples</h3>
+      <%if @project.samples.count == 0 %>
+      <p> No samples have been drawn yet.</p>
+      <p><%= abutton_to 'Draw new sample', new_sample_path%></p>
+      <%else%>
+      <p> <%=pluralize(@project.samples.count, 'sample')%> in the project.</p> 
+      
+        <%if act = @project.samples.active.first %>
+          <p> Currently active sample is <%= act %></p>
+          <%end%>
 
-					<p> <%= abutton_to 'View samples', samples_path %>
-					<%= abutton_to 'Draw new sample', new_sample_path%></p>
-					<%end%>
-		</div>
-	</div>
-	
-	<div class="row-fluid">
-		
-		<div class="span4">
-			<h3>Manual Classifiers</h3> 
-			<p> <%=pluralize(@project.classifiers.manual.count, 'classifier')%> in the codebook.</p> 
-			<table> 
-				<% if stat = @stats[:most_reliable_classifier]%>
-				<tr>
-					<th>Most reliable</th> 
-					<td><%= stat.name %></td> 
-					<td class="currency"><%= stat.manual_reliability%></td>
-				</tr> 
-				<%end%>
-				
-				<% if stat = @stats[:least_reliable_classifier]%>
-				<tr>
-					<th>Least reliable</th> 
-					<td><%= stat.name %></td> 
-					<td class="currency"><%= stat.manual_reliability%></td>
-				</tr> 
-				<%end%>
-			</table>
-			<p><%= abutton_to 'View classifiers', classifiers_path %> <%= abutton_to 'Add new classifier', new_classifier_path%></p>
-   	</div>
-		
-		<div class="span4">
-			<h3>Automatic Classifiers</h3> 
-			<p> <%=pluralize(@project.classifiers.auto.count, 'classifier')%> in the codebook.</p> 
-			<table> 
-				<% if stat = @stats[:most_prevalent]%>
-				<tr>
-					<th>Most reliable</th> 
-					<td><%= stat.name %></td> 
-					<td class="currency"><%= stat.prevalence%></td>
-				</tr> 
-				<%end%>
-				
-				<% if stat = @stats[:least_prevalent]%>
-				<tr>
-					<th>Least reliable</th> 
-					<td><%= stat.name %></td> 
-					<td class="currency"><%= stat.prevalence%></td>
-				</tr> 
-				<%end%>
-			</table>
-			<p><%= abutton_to 'Add new automatic classifier', new_classifier_path(:type=>'dict')%></p>
-		</div>
-		
-		<div class="span4">
-			<h3>Coders</h3>
-				<p> <%=pluralize(@project.users.count, 'coder')%> employed in this project.</p>
-				<table>
-				<% if @project.users.count > 1%>
+          <p> <%= abutton_to 'View samples', samples_path %>
+          <%= abutton_to 'Draw new sample', new_sample_path%></p>
+          <%end%>
+    </div>
+  </div>
+  
+  <div class="row-fluid">
+    
+    <div class="span4">
+      <h3>Manual Classifiers</h3> 
+      <p> <%=pluralize(@project.classifiers.manual.count, 'classifier')%> in the codebook.</p> 
+      <table> 
+        <% if stat = @stats[:most_reliable_classifier]%>
+        <tr>
+          <th>Most reliable</th> 
+          <td><%= stat.name %></td> 
+          <td class="currency"><%= stat.manual_reliability%></td>
+        </tr> 
+        <%end%>
+        
+        <% if stat = @stats[:least_reliable_classifier]%>
+        <tr>
+          <th>Least reliable</th> 
+          <td><%= stat.name %></td> 
+          <td class="currency"><%= stat.manual_reliability%></td>
+        </tr> 
+        <%end%>
+      </table>
+      <p><%= abutton_to 'View classifiers', classifiers_path %> <%= abutton_to 'Add manual classifier', new_classifier_path%></p>
+     </div>
+    
+    <div class="span4">
+      <h3>Automatic Classifiers</h3> 
+      <p> <%=pluralize(@project.classifiers.auto.count, 'classifier')%> in the codebook.</p> 
+      <table> 
+        <% if stat = @stats[:most_prevalent]%>
+        <tr>
+          <th>Most reliable</th> 
+          <td><%= stat.name %></td> 
+          <td class="currency"><%= stat.prevalence%></td>
+        </tr> 
+        <%end%>
+        
+        <% if stat = @stats[:least_prevalent]%>
+        <tr>
+          <th>Least reliable</th> 
+          <td><%= stat.name %></td> 
+          <td class="currency"><%= stat.prevalence%></td>
+        </tr> 
+        <%end%>
+      </table>
+      <p>
+        <%= abutton_to 'Add dictionary classifier', new_classifier_path(:type=>'dict')%>
+        <%= abutton_to 'Add external classifier', new_classifier_path(:type=>'ext')%>
+      </p>
+    </div>
+    
+    <div class="span4">
+      <h3>Coders</h3>
+        <p> <%=pluralize(@project.users.count, 'coder')%> employed in this project.</p>
+        <table>
+        <% if @project.users.count > 1%>
 
-						<% if stat = @stats[:most_active_user]%>
-						<tr>
-							<th>Most active</th> 
-							<td><%= stat.email %></td> 
-							<td class="currency"><%= stat.documents.count%></td>
-						</tr> 
-						<%end%>
-        	
-						<% if stat = @stats[:least_active_user]%>
-						<tr>
-							<th>Least active</th> 
-							<td><%= stat.email %></td> 
-							<td class="currency"><%= stat.documents.count%></td>
-						</tr> 
-						<%end%>
-				<%end%>
-				</table>
-			<p>
-				<%= abutton_to 'View coders', users_path %>
-			<%= abutton_to 'Add new coder', new_user_path%></p>
-		</div>
+            <% if stat = @stats[:most_active_user]%>
+            <tr>
+              <th>Most active</th> 
+              <td><%= stat.email %></td> 
+              <td class="currency"><%= stat.documents.count%></td>
+            </tr> 
+            <%end%>
+          
+            <% if stat = @stats[:least_active_user]%>
+            <tr>
+              <th>Least active</th> 
+              <td><%= stat.email %></td> 
+              <td class="currency"><%= stat.documents.count%></td>
+            </tr> 
+            <%end%>
+        <%end%>
+        </table>
+      <p>
+        <%= abutton_to 'View coders', users_path %>
+      <%= abutton_to 'Add new coder', new_user_path%></p>
+    </div>
 </div>
