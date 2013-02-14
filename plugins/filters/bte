@@ -2,7 +2,7 @@
 # (c) 2001 Aidan Finn
 # Modified by Bill Bushey <wbushey@acm.org> and Brian Young <byoung061@gmail.com> on August 10th, 2009
 # Released under the terms of the GNU GPL
-
+<
 import htmllib
 import formatter
 import string
@@ -203,9 +203,6 @@ if __name__ == '__main__':
     p.feed(html)
     p.close()
     x = p.body_text()
-    s = p.summary()
-    t = p.full_text()
-
     try:
         print x
     except:
