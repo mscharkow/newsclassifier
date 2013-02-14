@@ -11,6 +11,10 @@ class ProjectsController < ApplicationController
   def show
     @fullpage = true
     @documents = @project.documents
+    respond_to do |format|
+      format.html
+      format.json { render json: @project, :include=>[:sources,:classifiers] }
+    end
   end
 
 

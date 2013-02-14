@@ -4,7 +4,6 @@ class Classification < ActiveRecord::Base
   belongs_to :user
   belongs_to :classifier,:counter_cache => true
   
-  #named_scope :by_project, lambda { |project| { :conditions => ['classifier_id in (?) and document_id in(?)', project.classifiers,project.documents(:select=>:id)] }}
   scope :auto, where(:user_id => nil)
   scope :manual, where('user_id > 0')
  
@@ -14,7 +13,6 @@ class Classification < ActiveRecord::Base
   #validates_uniqueness_of :classifier_id, :scope=>[:document_id, :user_id] TODO: find out if it's necessary
   
   before_save :set_classifier
-  #after_create :train
   
   def set_classifier
     self.classifier = category.classifier unless classifier_id

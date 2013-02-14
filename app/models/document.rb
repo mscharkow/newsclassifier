@@ -59,29 +59,17 @@ class Document < ActiveRecord::Base
   end
   
   def get_url_content(u = print_url)
-    begin
-      html = open(u).readlines.join(' ')
-      body.update_attributes(:raw_content=>html) if html
-    rescue OpenURI::HTTPError
-      if u==print_url && u != url
-        get_url_content(url)
+    if ( open(u,:read_timeout=>2){|f|f.content_type} rescue nil ) == 'text/html'
+      if html = open(u,:read_timeout=>2).read
+        body.update_attributes(:raw_content=>html)
       end
+    else
+      get_url_content(url) if print_url != url
     end
   end
   
-  def get_classifications(permanent=nil)
-    cl = []
-    source.project.classifiers.auto.find_each(:include=>:categories){|c|cl << c.classify(self,permanent)}
-    cl
-  end
-  
-  def update_body(*args)
-    body.update_attributes(*args) and touch
-  end
   
   # Document content 
-  
-  
   def teaser(size=100)
     @teaser ||= content.split(' ')[0..size].join(' ')+' ...' rescue ''
   end
@@ -90,8 +78,8 @@ class Document < ActiveRecord::Base
     @fulltext ||= "#{title} #{content}".gsub(/<\/?[^>]*>/, "").strip
   end
   
-  def csv_row
-    "#{id};#{clean(title)} #{clean(content)}"
+  def to_csv
+    "#{id};#{clean(title)} #{clean(content)}\n"
   end
   
   def clean(text)
@@ -104,18 +92,36 @@ class Document < ActiveRecord::Base
     {:words=>fulltext.words.size,:ari => fulltext.ari.to_i,:sentences => fulltext.sentences}
   end
   
+  
+  # Link Extraction
   def links
     Rails.cache.fetch([cache_key, 'links']){LinkExtractor.new(url,raw_content).extract}
   end
   
   def unique_links
     Rails.cache.fetch([cache_key, 'unique_links']) do 
-      prev_links = source.documents.where(['id < ?',self]).limit(10).map(&:links)
-      next_links = source.documents.where(['id > ?',self]).limit(10).map(&:links)
+      prev_links = source.documents.where(['id < ?',self]).limit(50).map(&:links)
+      next_links = source.documents.where(['id > ?',self]).limit(50).map(&:links)
       links - [prev_links + next_links].flatten.uniq
     end
   end
 
+  # Image Extraction
+  def images
+    Rails.cache.fetch([cache_key, 'images']) do 
+      Nokogiri::HTML(raw_content).css('img').map { |i| {:src=>i['src'],:alt=>i['alt'], :size=>(i['width'].to_i * i['height'].to_i)} }.compact
+    end
+  end
+  
+  def unique_images
+    Rails.cache.fetch([cache_key, 'unique_images']) do 
+      prev_images = source.documents.where(['id < ?',self]).limit(50).map(&:images)
+      next_images = source.documents.where(['id > ?',self]).limit(50).map(&:images)
+      images - [prev_images + next_images].flatten.uniq
+    end
+  end
+  
+  
   # Sanitize, save and export
     
   def sanitize_content
@@ -125,10 +131,8 @@ class Document < ActiveRecord::Base
     self.url = url.try(:strip)
   end
   
-  def export
-    to_json(:include=>{:body=>{:only=>[:summary,:content,:raw_content]},
-                        :source=>{:only=>[:name,:metadata,:urls]}
-                      })
+  def as_json(options={})
+    super :only=>[:title,:url, :pubdate], :include=>{:body=>{:only=>[:summary,:content,:raw_content]}}
   end
   
   def write_to_file(path=nil)

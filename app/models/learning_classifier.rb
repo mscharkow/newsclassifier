@@ -17,8 +17,9 @@ class LearningClassifier < Classifier
   end
     
   def reset
-    classifications.destroy_all
-    File.delete(storage_path)
+    Classification.delete_all( {:document_id=>documents.map(&:id), :classifier_id=>id} )
+    reset_all_counters
+    File.delete(storage_path) rescue nil
   end
   
   # Reliability tests
@@ -63,7 +64,9 @@ class LearningClassifier < Classifier
   end
 
   def classify_batch(documents)
+    Classification.delete_all( {:document_id=>documents.map(&:id), :classifier_id=>id} )
     documents.each{ |doc| classify(doc, true)}
+    reset_all_counters
   end
   
   def classify_all
@@ -77,7 +80,6 @@ class LearningClassifier < Classifier
     end
   end
   
-  
   # Internal stuff
   
   def scores(document)
@@ -90,8 +92,6 @@ class LearningClassifier < Classifier
     classification.category_id != scores[0][0] || (scores[0][1]/(scores[1][1])) < threshold
   end
   
-
-  
   def bayes_classifier
     @bayes ||= create_bayes
   end
@@ -99,7 +99,8 @@ class LearningClassifier < Classifier
   def create_bayes
     store = StuffClassifier::FileStorage.new(storage_path)
     @bayes = StuffClassifier::TfIdf.new(id, :stemming => false, :storage => store)
-    categories.each{|cat| @bayes.train(cat.value,'')}
+    teacher.categories.each{|cat| @bayes.train(cat.value, relevant_content(cat.documents.first))}
+    @bayes.save_state
     if @bayes.training_count <= categories.size
       training_set = teacher.classifications.includes(:category,:document=>:body).sort_by{rand}
       training_set = training_set[0..training_set.size/2] if teacher.type == 'DictionaryClassifier'
