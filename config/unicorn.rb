@@ -6,10 +6,10 @@ timeout 60
 
 listen 5000, :tcp_nopush => false
 
-pid  APP_ROOT+ '/tmp/pids/unicorn.pid'
-listen APP_ROOT + "/tmp/sockets/unicorn.sock"
-stderr_path APP_ROOT + "/log/unicorn.stderr.log"
-stdout_path APP_ROOT + "/log/unicorn.stdout.log"
+#pid  APP_ROOT+ '/tmp/pids/unicorn.pid'
+#listen APP_ROOT + "/tmp/sockets/unicorn.sock"
+#stderr_path APP_ROOT + "/log/unicorn.stderr.log"
+#stdout_path APP_ROOT + "/log/unicorn.stdout.log"
 
 after_fork do |server, worker|
   ActiveRecord::Base.establish_connection
