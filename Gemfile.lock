@@ -210,7 +210,7 @@ GEM
     rubinius-actor (0.0.2)
       rubinius-core-api
     rubinius-core-api (0.0.1)
-    ruby-prof (0.12.0)
+    ruby-prof (0.12.2)
     ruby-stemmer (0.9.3)
     sass (3.2.5)
     sass-rails (3.2.5)
